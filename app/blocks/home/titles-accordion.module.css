@@ -1,0 +1,110 @@
+.root {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-lg);
+  direction: rtl;
+}
+
+.heading {
+  font-family: var(--family-display);
+  font-size: var(--text-2xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-lg);
+}
+
+.item {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-sm);
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.item:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+.itemOpen {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.itemHeader {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: right;
+  gap: var(--space-md);
+}
+
+.itemTitle {
+  font-family: var(--family-hebrew);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-text);
+  flex: 1;
+}
+
+.itemOpen .itemTitle {
+  color: var(--color-primary);
+}
+
+.chevron {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.itemBody {
+  padding: 0 var(--space-lg) var(--space-lg);
+  border-top: 1px solid var(--color-border-light);
+}
+
+.content {
+  padding-top: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.paragraph {
+  font-family: var(--family-hebrew);
+  font-size: var(--text-base);
+  line-height: 1.8;
+  color: var(--color-text);
+}
+
+.images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.image {
+  width: 100%;
+  max-width: 300px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+}
+
+.state {
+  text-align: center;
+  padding: var(--space-2xl);
+  color: var(--color-text-muted);
+  font-family: var(--family-hebrew);
+}
+
+@media (max-width: 600px) {
+  .root {
+    padding: var(--space-lg) var(--space-md);
+  }
+}

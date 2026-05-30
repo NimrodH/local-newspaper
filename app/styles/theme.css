@@ -1,0 +1,57 @@
+:root {
+  /* Colors */
+  --color-primary: #1a5c2a;
+  --color-primary-dark: #134520;
+  --color-secondary: #c0392b;
+  --color-accent: #e67e22;
+  --color-bg: #f9f6f0;
+  --color-bg-card: #ffffff;
+  --color-bg-header: #ffffff;
+  --color-text: #1a1a1a;
+  --color-text-muted: #6b6b6b;
+  --color-text-light: #9a9a9a;
+  --color-border: #e0d9ce;
+  --color-border-light: #ede8e0;
+  --color-success: #27ae60;
+  --color-error: #c0392b;
+  --color-warning: #f39c12;
+  --color-overlay: rgba(0, 0, 0, 0.5);
+
+  /* Font Families */
+  --family-display: 'Playfair Display', 'David Libre', serif;
+  --family-body: 'Source Sans 3', 'Assistant', sans-serif;
+  --family-hebrew: 'Assistant', 'Rubik', sans-serif;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  /* Text sizes */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+
+  /* Nav height */
+  --nav-height: 120px;
+}

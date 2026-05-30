@@ -1,0 +1,88 @@
+.root {
+  width: 100%;
+  background-color: var(--color-bg-header);
+  box-shadow: var(--shadow-md);
+}
+
+.banner {
+  width: 100%;
+  overflow: hidden;
+  max-height: 80px;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(135deg, #e8f5e9, #f3faf4);
+  min-height: 80px;
+}
+
+.bannerImage {
+  width: 100%;
+  max-width: 900px;
+  height: 80px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.navBar {
+  background-color: var(--color-primary);
+  padding: 0 var(--space-lg);
+}
+
+.navButtons {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  align-items: center;
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.navBtn {
+  color: #fff;
+  font-family: var(--family-hebrew);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  transition: background-color 0.2s;
+  white-space: nowrap;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+}
+
+.navBtn:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.navBtnPdf {
+  background-color: var(--color-secondary);
+  margin-inline-start: auto;
+}
+
+.navBtnPdf:hover {
+  background-color: #a93226;
+}
+
+.navBtnEditor {
+  background-color: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.3);
+  font-size: var(--text-xs);
+  opacity: 0.8;
+}
+
+.navBtnEditor:hover {
+  background-color: rgba(255,255,255,0.25);
+  opacity: 1;
+}
+
+@media (max-width: 600px) {
+  .navButtons {
+    justify-content: center;
+  }
+
+  .navBtnPdf {
+    margin-inline-start: unset;
+  }
+}

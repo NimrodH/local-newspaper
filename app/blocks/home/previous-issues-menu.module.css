@@ -1,0 +1,102 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--color-overlay);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding-top: var(--nav-height);
+}
+
+.panel {
+  background: var(--color-bg-card);
+  width: 320px;
+  max-height: calc(100vh - var(--nav-height));
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  direction: rtl;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  background-color: var(--color-primary);
+  color: #fff;
+  position: sticky;
+  top: 0;
+}
+
+.title {
+  font-family: var(--family-hebrew);
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+.closeBtn {
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 var(--space-xs);
+}
+
+.list {
+  list-style: none;
+  padding: var(--space-sm) 0;
+  margin: 0;
+}
+
+.issueBtn {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--space-md) var(--space-lg);
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--color-border-light);
+  cursor: pointer;
+  text-align: right;
+  gap: var(--space-xs);
+  transition: background 0.15s;
+}
+
+.issueBtn:hover {
+  background: var(--color-bg);
+}
+
+.issueBtn.active {
+  background: rgba(26, 92, 42, 0.08);
+}
+
+.issueNum {
+  font-family: var(--family-hebrew);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.issueDate {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.empty {
+  padding: var(--space-xl);
+  text-align: center;
+  color: var(--color-text-muted);
+  font-family: var(--family-hebrew);
+}
+
+@media (max-width: 400px) {
+  .panel {
+    width: 100%;
+  }
+}
