@@ -100,11 +100,6 @@
       "id": "5ca93da0-fb45-487e-a594-9fea2fff78ef"
     },
     {
-      "name": "PDF Export",
-      "description": "Allows users to export the currently displayed articles as a PDF document for offline reading or printing.",
-      "id": "f3eed3dc-a69d-4a69-9025-72c68ccf7a63"
-    },
-    {
       "name": "Article Management",
       "description": "Password-protected interface for editors to add new articles by entering title, content, and keywords. Includes automatic edition number assignment based on the last approved edition.",
       "id": "66097572-a89d-4ce4-b5e3-3ae3a095d026"
