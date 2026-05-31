@@ -57,7 +57,7 @@ export function ArticlesList({ className, articles, loading, error, searchQuery 
       )}
       {!loading && error && (
         <div className={style.state}>
-          <p className={style.errorText}>שגיאה בטעינת הנתונים. אנא בדוק את חיבור Supabase.</p>
+          <p className={style.errorText}>{error}</p>
         </div>
       )}
       {!loading && !error && filtered.length === 0 && (

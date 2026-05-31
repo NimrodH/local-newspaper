@@ -15,9 +15,11 @@ export function useArticles() {
       .eq("approved_for_display", true)
       .order("issue_number", { ascending: false });
     if (error) {
-      setError(error.message);
+      console.error("[Supabase] fetchIssues error:", error.code, error.message, error.details, error.hint);
+      setError(`שגיאה בטעינת גיליונות: ${error.message}`);
       return [];
     }
+    console.info("[Supabase] fetchIssues success, count:", data?.length);
     return (data as Issue[]) ?? [];
   }, []);
 
@@ -29,7 +31,8 @@ export function useArticles() {
       .eq("issue_number", issueNumber)
       .order("order_in_issue", { ascending: true });
     if (error) {
-      setError(error.message);
+      console.error("[Supabase] fetchArticles error:", error.code, error.message, error.details, error.hint);
+      setError(`שגיאה בטעינת כתבות: ${error.message}`);
       setArticles([]);
     } else {
       setArticles((data as Article[]) ?? []);
@@ -39,6 +42,7 @@ export function useArticles() {
 
   const loadLatest = useCallback(async () => {
     setLoading(true);
+    setError(null);
     const issuesList = await fetchIssues();
     setIssues(issuesList);
     if (issuesList.length > 0) {
