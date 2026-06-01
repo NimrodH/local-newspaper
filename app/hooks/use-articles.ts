@@ -22,6 +22,9 @@ export function useArticles(preview = false) {
       setError(`שגיאה בטעינת גיליונות: ${error.message}`);
       return [];
     }
+    if (preview) {
+      console.log("[Preview] fetchIssues raw data (all issues, no approved filter):", data);
+    }
     console.info("[Supabase] fetchIssues success, count:", data?.length);
     return (data as Issue[]) ?? [];
   }, [preview]);
@@ -38,10 +41,13 @@ export function useArticles(preview = false) {
       setError(`שגיאה בטעינת כתבות: ${error.message}`);
       setArticles([]);
     } else {
+      if (preview) {
+        console.log(`[Preview] fetchArticles for issue ${issueNumber} raw data:`, data);
+      }
       setArticles((data as Article[]) ?? []);
     }
     setLoading(false);
-  }, []);
+  }, [preview]);
 
   const loadLatest = useCallback(async () => {
     setLoading(true);

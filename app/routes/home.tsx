@@ -37,6 +37,9 @@ export default function Reader() {
       {preview && (
         <div className={styles.previewBanner}>
           <span className={styles.previewBannerText}>👁 מצב תצוגה מקדימה — גיליון טיוטה (לא פורסם)</span>
+          <span className={styles.previewBannerDiag}>
+            {loading ? "טוען…" : `גיליונות: ${issues.length} | כתבות: ${articles.length}`}
+          </span>
           <Link to="/editor" className={styles.previewBannerLink}>חזרה לעריכה</Link>
         </div>
       )}
