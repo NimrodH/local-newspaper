@@ -6,6 +6,7 @@ import { ArticleForm, type ArticleFormData } from "../blocks/editor/article-form
 import { ImageUpload } from "../blocks/editor/image-upload";
 import { ImageSelection } from "../blocks/editor/image-selection";
 import { SaveButton } from "../blocks/editor/save-button";
+import { PublishIssueButton } from "../blocks/editor/publish-issue-button";
 
 export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
@@ -73,6 +74,9 @@ export default function Editor() {
             </div>
             <div className={styles.card}>
               <SaveButton formData={formData} selectedImages={selectedImages} onSaved={handleSaved} />
+            </div>
+            <div className={styles.card}>
+              <PublishIssueButton />
             </div>
           </div>
           <div className={styles.mediaCol}>

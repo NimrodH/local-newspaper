@@ -1,0 +1,96 @@
+import { useState } from "react";
+import classnames from "classnames";
+import { IconSend, IconCheck, IconX } from "@tabler/icons-react";
+import style from "./publish-issue-button.module.css";
+import { supabase } from "~/lib/supabase";
+
+export interface PublishIssueButtonProps {
+  className?: string;
+}
+
+async function publishDraftIssue(): Promise<number | null> {
+  const { data: drafts, error: fetchError } = await supabase
+    .from("issues")
+    .select("*")
+    .eq("approved_for_display", false)
+    .order("issue_number", { ascending: false })
+    .limit(1);
+
+  if (fetchError) throw new Error(fetchError.message);
+  if (!drafts || drafts.length === 0) return null;
+
+  const draft = drafts[0];
+  const { error: updateError } = await supabase
+    .from("issues")
+    .update({ approved_for_display: true })
+    .eq("id", draft.id);
+
+  if (updateError) throw new Error(updateError.message);
+  return draft.issue_number as number;
+}
+
+export function PublishIssueButton({ className }: PublishIssueButtonProps) {
+  const [publishing, setPublishing] = useState(false);
+  const [status, setStatus] = useState<"idle" | "success" | "error" | "none">("idle");
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [publishedNumber, setPublishedNumber] = useState<number | null>(null);
+
+  const handlePublish = async () => {
+    setPublishing(true);
+    setStatus("idle");
+    setErrorMsg(null);
+    try {
+      const issueNumber = await publishDraftIssue();
+      if (issueNumber === null) {
+        setStatus("none");
+      } else {
+        setPublishedNumber(issueNumber);
+        setStatus("success");
+      }
+    } catch (e: unknown) {
+      setStatus("error");
+      setErrorMsg(e instanceof Error ? e.message : "שגיאה בפרסום");
+    } finally {
+      setPublishing(false);
+    }
+  };
+
+  return (
+    <div className={classnames(style.root, className)}>
+      <h3 className={style.heading}>פרסום גיליון</h3>
+      <p className={style.hint}>לאחר הוספת כל הכתבות, לחצו כאן כדי לפרסם את הגיליון הנוכחי באתר.</p>
+      <button
+        type="button"
+        className={classnames(style.btn, publishing && style.btnPublishing)}
+        onClick={handlePublish}
+        disabled={publishing}
+      >
+        {publishing ? (
+          <>מפרסם…</>
+        ) : (
+          <>
+            <IconSend size={18} style={{ marginLeft: 8 }} />
+            פרסם גיליון
+          </>
+        )}
+      </button>
+      {status === "success" && (
+        <p className={style.success}>
+          <IconCheck size={16} style={{ marginLeft: 4 }} />
+          גיליון {publishedNumber} פורסם בהצלחה!
+        </p>
+      )}
+      {status === "none" && (
+        <p className={style.warning}>
+          אין גיליון טיוטה לפרסום.
+        </p>
+      )}
+      {status === "error" && errorMsg && (
+        <p className={style.error}>
+          <IconX size={16} style={{ marginLeft: 4 }} />
+          {errorMsg}
+        </p>
+      )}
+    </div>
+  );
+}
