@@ -1,41 +1,33 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useFetcher } from "react-router";
 import classnames from "classnames";
 import { IconLock, IconEye, IconEyeOff } from "@tabler/icons-react";
 import style from "./password-login.module.css";
-import { supabase } from "~/lib/supabase";
 
 export interface PasswordLoginProps {
   className?: string;
   onAuthenticated: () => void;
 }
 
+type ActionData = { authenticated?: boolean; error?: string };
+
 export function PasswordLogin({ className, onAuthenticated }: PasswordLoginProps) {
+  const fetcher = useFetcher<ActionData>();
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
-    try {
-      const { data, error: dbError } = await supabase
-        .from("settings")
-        .select("value")
-        .eq("key", "editor_password")
-        .single();
-      if (dbError) throw dbError;
-      if (data?.value === password) {
-        onAuthenticated();
-      } else {
-        setError("סיסמא שגויה. אנא נסה שנית.");
-      }
-    } catch {
-      setError("שגיאה בבדיקת הסיסמא. אנא בדוק את חיבור Supabase.");
-    } finally {
-      setLoading(false);
+  const isLoading = fetcher.state !== "idle";
+  const error = fetcher.data?.error;
+
+  useEffect(() => {
+    if (fetcher.data?.authenticated) {
+      onAuthenticated();
     }
+  }, [fetcher.data, onAuthenticated]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    fetcher.submit({ password }, { method: "post" });
   };
 
   return (
@@ -67,8 +59,8 @@ export function PasswordLogin({ className, onAuthenticated }: PasswordLoginProps
             </button>
           </div>
           {error && <p className={style.error}>{error}</p>}
-          <button type="submit" className={style.submitBtn} disabled={loading}>
-            {loading ? "בודק…" : "כניסה"}
+          <button type="submit" className={style.submitBtn} disabled={isLoading}>
+            {isLoading ? "בודק…" : "כניסה"}
           </button>
         </form>
       </div>

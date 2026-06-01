@@ -1,10 +1,27 @@
 import { useState } from "react";
+import type { Route } from "./+types/editor";
 import styles from "./editor.module.css";
 import { PasswordLogin } from "../blocks/editor/password-login";
 import { ArticleForm, type ArticleFormData } from "../blocks/editor/article-form";
 import { ImageUpload } from "../blocks/editor/image-upload";
 import { ImageSelection } from "../blocks/editor/image-selection";
 import { SaveButton } from "../blocks/editor/save-button";
+
+export async function action({ request }: Route.ActionArgs) {
+  const formData = await request.formData();
+  const password = formData.get("password") as string;
+  const correctPassword = process.env.EDITOR_PASSWORD;
+
+  if (!correctPassword) {
+    return { error: "סיסמא לא הוגדרה בשרת." };
+  }
+
+  if (password === correctPassword) {
+    return { authenticated: true };
+  }
+
+  return { error: "סיסמא שגויה. אנא נסה שנית." };
+}
 
 const EMPTY_FORM: ArticleFormData = {
   title: "",
