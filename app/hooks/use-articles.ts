@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase, type Article, type Issue } from "~/lib/supabase";
 
-export function useArticles() {
+export function useArticles(preview = false) {
   const [articles, setArticles] = useState<Article[]>([]);
   const [issues, setIssues] = useState<Issue[]>([]);
   const [currentIssue, setCurrentIssue] = useState<Issue | null>(null);
@@ -9,11 +9,14 @@ export function useArticles() {
   const [error, setError] = useState<string | null>(null);
 
   const fetchIssues = useCallback(async () => {
-    const { data, error } = await supabase
+    let query = supabase
       .from("issues")
       .select("*")
-      .eq("approved_for_display", true)
       .order("issue_number", { ascending: false });
+    if (!preview) {
+      query = query.eq("approved_for_display", true);
+    }
+    const { data, error } = await query;
     if (error) {
       console.error("[Supabase] fetchIssues error:", error.code, error.message, error.details, error.hint);
       setError(`שגיאה בטעינת גיליונות: ${error.message}`);
@@ -21,7 +24,7 @@ export function useArticles() {
     }
     console.info("[Supabase] fetchIssues success, count:", data?.length);
     return (data as Issue[]) ?? [];
-  }, []);
+  }, [preview]);
 
   const fetchArticles = useCallback(async (issueNumber: number) => {
     setLoading(true);

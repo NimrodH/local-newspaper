@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router";
 import type { Route } from "./+types/editor";
 import styles from "./editor.module.css";
 import { PasswordLogin } from "../blocks/editor/password-login";
@@ -63,7 +64,12 @@ export default function Editor() {
     <div className={styles.root}>
       <div className={styles.container}>
         <div className={styles.pageHeader}>
-          <h1 className={styles.pageTitle}>עריכת כתבות</h1>
+          <div className={styles.pageHeaderTop}>
+            <h1 className={styles.pageTitle}>עריכת כתבות</h1>
+            <Link to="/?preview=true" className={styles.previewBtn}>
+              👁 תצוגה מקדימה
+            </Link>
+          </div>
           <p className={styles.pageSubtitle}>הוסיפו כתבות חדשות לגיליון</p>
         </div>
 

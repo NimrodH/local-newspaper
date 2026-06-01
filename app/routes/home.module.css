@@ -64,6 +64,34 @@
   font-weight: 600;
 }
 
+.previewBanner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  background: #fff3cd;
+  border-bottom: 2px solid #f0c040;
+  padding: var(--space-sm) var(--space-lg);
+  font-family: var(--family-hebrew);
+  font-size: var(--text-sm);
+}
+
+.previewBannerText {
+  color: #856404;
+  font-weight: 600;
+}
+
+.previewBannerLink {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: underline;
+  white-space: nowrap;
+}
+
+.previewBannerLink:hover {
+  opacity: 0.8;
+}
+
 @media (max-width: 600px) {
   .pageNavRow {
     padding: var(--space-sm) var(--space-md);
