@@ -33,7 +33,14 @@ const EMPTY_FORM: ArticleFormData = {
 };
 
 export default function Editor() {
-  const [authenticated, setAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(
+    () => sessionStorage.getItem("editor_auth") === "true"
+  );
+
+  const handleAuthenticated = () => {
+    sessionStorage.setItem("editor_auth", "true");
+    setAuthenticated(true);
+  };
   const [formData, setFormData] = useState<ArticleFormData>(EMPTY_FORM);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
@@ -55,7 +62,7 @@ export default function Editor() {
   if (!authenticated) {
     return (
       <div className={styles.root}>
-        <PasswordLogin onAuthenticated={() => setAuthenticated(true)} />
+        <PasswordLogin onAuthenticated={handleAuthenticated} />
       </div>
     );
   }
