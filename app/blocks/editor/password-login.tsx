@@ -13,7 +13,6 @@ type ActionData = { authenticated?: boolean; error?: string };
 
 export function PasswordLogin({ className, onAuthenticated }: PasswordLoginProps) {
   const fetcher = useFetcher<ActionData>();
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const isLoading = fetcher.state !== "idle";
@@ -25,11 +24,6 @@ export function PasswordLogin({ className, onAuthenticated }: PasswordLoginProps
     }
   }, [fetcher.data, onAuthenticated]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    fetcher.submit({ password }, { method: "post" });
-  };
-
   return (
     <div className={classnames(style.root, className)}>
       <div className={style.card}>
@@ -38,13 +32,12 @@ export function PasswordLogin({ className, onAuthenticated }: PasswordLoginProps
         </div>
         <h2 className={style.title}>עמוד עריכת עיתון</h2>
         <p className={style.subtitle}>הכנסו סיסמא כדי להתחבר</p>
-        <form onSubmit={handleSubmit} className={style.form}>
+        <fetcher.Form method="post" className={style.form}>
           <div className={style.inputWrapper}>
             <input
               type={showPassword ? "text" : "password"}
+              name="password"
               placeholder="סיסמא"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
               className={style.input}
               dir="rtl"
               required
@@ -62,7 +55,7 @@ export function PasswordLogin({ className, onAuthenticated }: PasswordLoginProps
           <button type="submit" className={style.submitBtn} disabled={isLoading}>
             {isLoading ? "בודק…" : "כניסה"}
           </button>
-        </form>
+        </fetcher.Form>
       </div>
     </div>
   );
