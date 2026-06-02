@@ -1,7 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase, type Article, type Issue } from "~/lib/supabase";
 
-export function useArticles(preview = false) {
+/**
+ * Fetches published issues and their articles from Supabase.
+ * @param enabled - Set to false to skip fetching (e.g. when preview loader data is used instead).
+ */
+export function useArticles(enabled = true) {
   const [articles, setArticles] = useState<Article[]>([]);
   const [issues, setIssues] = useState<Issue[]>([]);
   const [currentIssue, setCurrentIssue] = useState<Issue | null>(null);
@@ -9,25 +13,18 @@ export function useArticles(preview = false) {
   const [error, setError] = useState<string | null>(null);
 
   const fetchIssues = useCallback(async () => {
-    let query = supabase
+    const { data, error } = await supabase
       .from("issues")
       .select("*")
+      .eq("approved_for_display", true)
       .order("issue_number", { ascending: false });
-    if (!preview) {
-      query = query.eq("approved_for_display", true);
-    }
-    const { data, error } = await query;
     if (error) {
-      console.error("[Supabase] fetchIssues error:", error.code, error.message, error.details, error.hint);
+      console.error("[Supabase] fetchIssues error:", error.message);
       setError(`שגיאה בטעינת גיליונות: ${error.message}`);
       return [];
     }
-    if (preview) {
-      console.log("[Preview] fetchIssues raw data (all issues, no approved filter):", data);
-    }
-    console.info("[Supabase] fetchIssues success, count:", data?.length);
     return (data as Issue[]) ?? [];
-  }, [preview]);
+  }, []);
 
   const fetchArticles = useCallback(async (issueNumber: number) => {
     setLoading(true);
@@ -37,17 +34,14 @@ export function useArticles(preview = false) {
       .eq("issue_number", issueNumber)
       .order("order_in_issue", { ascending: true });
     if (error) {
-      console.error("[Supabase] fetchArticles error:", error.code, error.message, error.details, error.hint);
+      console.error("[Supabase] fetchArticles error:", error.message);
       setError(`שגיאה בטעינת כתבות: ${error.message}`);
       setArticles([]);
     } else {
-      if (preview) {
-        console.log(`[Preview] fetchArticles for issue ${issueNumber} raw data:`, data);
-      }
       setArticles((data as Article[]) ?? []);
     }
     setLoading(false);
-  }, [preview]);
+  }, []);
 
   const loadLatest = useCallback(async () => {
     setLoading(true);
@@ -64,8 +58,9 @@ export function useArticles(preview = false) {
   }, [fetchIssues, fetchArticles]);
 
   useEffect(() => {
-    loadLatest();
-  }, [loadLatest]);
+    if (enabled) loadLatest();
+    else setLoading(false);
+  }, [loadLatest, enabled]);
 
   const selectIssue = useCallback(
     async (issue: Issue) => {

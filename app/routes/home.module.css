@@ -81,13 +81,6 @@
   font-weight: 600;
 }
 
-.previewBannerDiag {
-  color: #856404;
-  font-size: var(--text-xs, 0.75rem);
-  opacity: 0.85;
-  margin-inline: var(--space-sm);
-}
-
 .previewBannerLink {
   color: var(--color-primary);
   font-weight: 600;
