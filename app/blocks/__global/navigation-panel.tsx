@@ -2,7 +2,7 @@ import classnames from "classnames";
 import { Link } from "react-router";
 import style from "./navigation-panel.module.css";
 
-const PANEL_BANNER = "/panel.jpg";
+const PANEL_BANNER = "/panel.svg";
 
 export interface NavigationPanelProps {
   className?: string;
