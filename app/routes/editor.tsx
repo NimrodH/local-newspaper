@@ -34,7 +34,7 @@ const EMPTY_FORM: ArticleFormData = {
 
 export default function Editor() {
   const [authenticated, setAuthenticated] = useState(
-    () => sessionStorage.getItem("editor_auth") === "true"
+    () => typeof window !== "undefined" && sessionStorage.getItem("editor_auth") === "true"
   );
 
   const handleAuthenticated = () => {
