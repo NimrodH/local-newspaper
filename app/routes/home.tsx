@@ -1,5 +1,6 @@
 import type { Route } from "./+types/home";
 import { Link, useNavigate } from "react-router";
+import { NavigationPanel } from "../blocks/__global/navigation-panel";
 import styles from "./home.module.css";
 import { createAdminClient, type Article, type Issue } from "~/lib/supabase";
 import { useArticles } from "~/hooks/use-articles";
@@ -107,20 +108,20 @@ export default function Reader({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className={styles.root}>
+      <NavigationPanel
+        onPreviousIssues={handlePreviousIssues}
+        onLatestIssue={handleLatestIssueFull}
+        onTitles={handleTitles}
+        onSearch={handleSearch}
+        onPdfExport={handlePdfExport}
+      />
+
       {isPreview && (
         <div className={styles.previewBanner}>
           <span className={styles.previewBannerText}>&#128065;&#65039; &#1502;&#1510;&#1489; &#1514;&#1510;&#1493;&#1490;&#1492; &#1502;&#1511;&#1491;&#1497;&#1502;&#1488;&#1492; &#8212; &#1490;&#1497;&#1500;&#1497;&#1493;&#1503; &#1496;&#1497;&#1493;&#1496;&#1488;&#1492; (&#1500;&#1488; &#1508;&#1493;&#1512;&#1505;&#1501;)</span>
           <Link to="/editor" className={styles.previewBannerLink}>&#1495;&#1494;&#1512;&#1492; &#1500;&#1506;&#1512;&#1497;&#1499;&#1492;</Link>
         </div>
       )}
-
-      <div className={styles.pageNavRow}>
-        <button className={styles.pageNavBtn} onClick={handlePreviousIssues}>&#1490;&#1497;&#1500;&#1497;&#1493;&#1504;&#1493;&#1514; &#1511;&#1493;&#1491;&#1502;&#1497;&#1497;&#1501;</button>
-        <button className={styles.pageNavBtn} onClick={handleLatestIssueFull}>&#1490;&#1497;&#1500;&#1497;&#1493;&#1503; &#1488;&#1495;&#1512;&#1493;&#1503;</button>
-        <button className={styles.pageNavBtn} onClick={handleTitles}>&#1499;&#1493;&#1514;&#1512;&#1493;&#1514;</button>
-        <button className={styles.pageNavBtn} onClick={handleSearch}>&#1495;&#1497;&#1508;&#1493;&#1513;</button>
-        <button className={styles.pageNavBtnSecondary} onClick={handlePdfExport}>&#1497;&#1497;&#1510;&#1493;&#1488; PDF</button>
-      </div>
 
       {currentIssue && (
         <div className={styles.issueLabel}>

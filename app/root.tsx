@@ -8,7 +8,6 @@ import "./styles/theme.css";
 import { useColorScheme } from "@dazl/color-scheme/react";
 import favicon from "/favicon.svg";
 import styles from "./root.module.css";
-import { NavigationPanel } from "./blocks/__global/navigation-panel";
 import { Footer } from "./blocks/__global/footer";
 
 export const links: Route.LinksFunction = () => [
@@ -33,9 +32,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <header className={styles.header}>
-          <NavigationPanel />
-        </header>
         <main className={styles.main}>{children}</main>
         <footer className={styles.footerWrapper}>
           <Footer />
