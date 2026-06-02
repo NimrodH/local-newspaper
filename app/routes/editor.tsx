@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import type { Route } from "./+types/editor";
 import styles from "./editor.module.css";
@@ -33,9 +33,13 @@ const EMPTY_FORM: ArticleFormData = {
 };
 
 export default function Editor() {
-  const [authenticated, setAuthenticated] = useState(
-    () => typeof window !== "undefined" && sessionStorage.getItem("editor_auth") === "true"
-  );
+  const [authenticated, setAuthenticated] = useState(false);
+
+  useEffect(() => {
+    if (sessionStorage.getItem("editor_auth") === "true") {
+      setAuthenticated(true);
+    }
+  }, []);
 
   const handleAuthenticated = () => {
     sessionStorage.setItem("editor_auth", "true");
