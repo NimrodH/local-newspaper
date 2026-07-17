@@ -6,7 +6,7 @@ import style from "./password-login.module.css";
 
 export interface PasswordLoginProps {
   className?: string;
-  onAuthenticated: () => void;
+  onAuthenticated: (password: string) => void;
 }
 
 type ActionData = { authenticated?: boolean; error?: string };
@@ -20,9 +20,10 @@ export function PasswordLogin({ className, onAuthenticated }: PasswordLoginProps
 
   useEffect(() => {
     if (fetcher.data?.authenticated) {
-      onAuthenticated();
+      const pass = fetcher.formData?.get("password") as string;
+      onAuthenticated(pass || "");
     }
-  }, [fetcher.data, onAuthenticated]);
+  }, [fetcher.data, fetcher.formData, onAuthenticated]);
 
   return (
     <div className={classnames(style.root, className)}>

@@ -2,14 +2,14 @@ import { useState, useRef, useCallback } from "react";
 import classnames from "classnames";
 import { IconUpload, IconClipboard, IconX } from "@tabler/icons-react";
 import style from "./image-upload.module.css";
-import { supabase } from "~/lib/supabase";
 
 export interface ImageUploadProps {
   className?: string;
+  password?: string;
   onUploaded: (path: string) => void;
 }
 
-export function ImageUpload({ className, onUploaded }: ImageUploadProps) {
+export function ImageUpload({ className, password = "", onUploaded }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -20,18 +20,32 @@ export function ImageUpload({ className, onUploaded }: ImageUploadProps) {
       setUploading(true);
       setError(null);
       setSuccess(null);
-      const ext = file.name.split(".").pop() ?? "jpg";
-      const path = `uploads/${Date.now()}.${ext}`;
-      const { error: uploadError } = await supabase.storage.from("images").upload(path, file, { upsert: true });
-      if (uploadError) {
-        setError("העלאה נכשלה: " + uploadError.message);
-      } else {
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const res = await fetch("/api/upload-image", {
+          method: "POST",
+          headers: {
+            "x-editor-password": password,
+          },
+          body: formData,
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || "שגיאה לא ידועה בהעלאה");
+        }
+
         setSuccess("תמונה הועלתה בהצלחה!");
-        onUploaded(path);
+        onUploaded(data.path);
+      } catch (err: any) {
+        setError("העלאה נכשלה: " + (err.message || err));
+      } finally {
+        setUploading(false);
       }
-      setUploading(false);
     },
-    [onUploaded]
+    [onUploaded, password]
   );
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -6,11 +6,12 @@ import { supabase } from "~/lib/supabase";
 
 export interface ImageSelectionProps {
   className?: string;
+  password?: string;
   selectedImages: string[];
   onToggleImage: (path: string) => void;
 }
 
-export function ImageSelection({ className, selectedImages, onToggleImage }: ImageSelectionProps) {
+export function ImageSelection({ className, password = "", selectedImages, onToggleImage }: ImageSelectionProps) {
   const [images, setImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -18,20 +19,23 @@ export function ImageSelection({ className, selectedImages, onToggleImage }: Ima
   useEffect(() => {
     async function loadImages() {
       setLoading(true);
-      const { data, error: listError } = await supabase.storage.from("images").list("uploads", {
-        limit: 100,
-        offset: 0,
-        sortBy: { column: "created_at", order: "desc" },
-      });
-      if (listError) {
-        setError(listError.message);
-      } else {
-        setImages((data ?? []).map((f) => `uploads/${f.name}`));
+      try {
+        const res = await fetch(`/api/list-images?password=${encodeURIComponent(password)}`);
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || "שגיאה בטעינת תמונות");
+        }
+        setImages(data.images ?? []);
+      } catch (err: any) {
+        setError(err.message || err);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
-    loadImages();
-  }, []);
+    if (password) {
+      loadImages();
+    }
+  }, [password, selectedImages.length]);
 
   function getUrl(path: string) {
     return supabase.storage.from("images").getPublicUrl(path).data.publicUrl;

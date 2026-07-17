@@ -2,34 +2,13 @@ import { useState } from "react";
 import classnames from "classnames";
 import { IconSend, IconCheck, IconX } from "@tabler/icons-react";
 import style from "./publish-issue-button.module.css";
-import { supabase } from "~/lib/supabase";
 
 export interface PublishIssueButtonProps {
   className?: string;
+  password?: string;
 }
 
-async function publishDraftIssue(): Promise<number | null> {
-  const { data: drafts, error: fetchError } = await supabase
-    .from("issues")
-    .select("*")
-    .eq("approved_for_display", false)
-    .order("issue_number", { ascending: false })
-    .limit(1);
-
-  if (fetchError) throw new Error(fetchError.message);
-  if (!drafts || drafts.length === 0) return null;
-
-  const draft = drafts[0];
-  const { error: updateError } = await supabase
-    .from("issues")
-    .update({ approved_for_display: true })
-    .eq("id", draft.id);
-
-  if (updateError) throw new Error(updateError.message);
-  return draft.issue_number as number;
-}
-
-export function PublishIssueButton({ className }: PublishIssueButtonProps) {
+export function PublishIssueButton({ className, password = "" }: PublishIssueButtonProps) {
   const [publishing, setPublishing] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error" | "none">("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -40,13 +19,21 @@ export function PublishIssueButton({ className }: PublishIssueButtonProps) {
     setStatus("idle");
     setErrorMsg(null);
     try {
-      const issueNumber = await publishDraftIssue();
-      if (issueNumber === null) {
-        setStatus("none");
-      } else {
-        setPublishedNumber(issueNumber);
-        setStatus("success");
+      const res = await fetch("/api/publish-issue", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "שגיאה בפרסום הגיליון");
       }
+
+      setPublishedNumber(data.issueNumber);
+      setStatus("success");
     } catch (e: unknown) {
       setStatus("error");
       setErrorMsg(e instanceof Error ? e.message : "שגיאה בפרסום");

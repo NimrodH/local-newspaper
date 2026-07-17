@@ -33,7 +33,7 @@ const EMPTY_FORM: ArticleFormData = {
 };
 
 export default function Editor() {
-  const [authenticated, setAuthenticated] = useState(false);
+  const [password, setPassword] = useState("");
   const [formData, setFormData] = useState<ArticleFormData>(EMPTY_FORM);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
@@ -52,10 +52,10 @@ export default function Editor() {
     setSelectedImages([]);
   };
 
-  if (!authenticated) {
+  if (!password) {
     return (
       <div className={styles.root}>
-        <PasswordLogin onAuthenticated={() => setAuthenticated(true)} />
+        <PasswordLogin onAuthenticated={(pass) => setPassword(pass)} />
       </div>
     );
   }
@@ -79,18 +79,18 @@ export default function Editor() {
               <ArticleForm data={formData} onChange={setFormData} />
             </div>
             <div className={styles.card}>
-              <SaveButton formData={formData} selectedImages={selectedImages} onSaved={handleSaved} />
+              <SaveButton password={password} formData={formData} selectedImages={selectedImages} onSaved={handleSaved} />
             </div>
             <div className={styles.card}>
-              <PublishIssueButton />
+              <PublishIssueButton password={password} />
             </div>
           </div>
           <div className={styles.mediaCol}>
             <div className={styles.card}>
-              <ImageUpload onUploaded={handleImageUploaded} />
+              <ImageUpload password={password} onUploaded={handleImageUploaded} />
             </div>
             <div className={styles.card}>
-              <ImageSelection selectedImages={selectedImages} onToggleImage={handleToggleImage} />
+              <ImageSelection password={password} selectedImages={selectedImages} onToggleImage={handleToggleImage} />
             </div>
             {selectedImages.length > 0 && (
               <div className={styles.selectedSummary}>

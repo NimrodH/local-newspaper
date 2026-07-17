@@ -2,51 +2,17 @@ import { useState } from "react";
 import classnames from "classnames";
 import { IconDeviceFloppy, IconCheck, IconX } from "@tabler/icons-react";
 import style from "./save-button.module.css";
-import { supabase } from "~/lib/supabase";
 import type { ArticleFormData } from "./article-form";
 
 export interface SaveButtonProps {
   className?: string;
+  password?: string;
   formData: ArticleFormData;
   selectedImages: string[];
   onSaved: () => void;
 }
 
-async function getOrCreateDraftIssue(): Promise<number> {
-  // Find unapproved issue
-  const { data: drafts } = await supabase
-    .from("issues")
-    .select("*")
-    .eq("approved_for_display", false)
-    .order("issue_number", { ascending: false })
-    .limit(1);
-
-  if (drafts && drafts.length > 0) {
-    return drafts[0].issue_number as number;
-  }
-
-  // Create new issue: issue_number = last approved + 1
-  const { data: approved } = await supabase
-    .from("issues")
-    .select("issue_number")
-    .eq("approved_for_display", true)
-    .order("issue_number", { ascending: false })
-    .limit(1);
-
-  const lastApproved = approved && approved.length > 0 ? (approved[0].issue_number as number) : 0;
-  const newNumber = lastApproved + 1;
-
-  const { error } = await supabase.from("issues").insert({
-    issue_number: newNumber,
-    issue_date: new Date().toISOString().slice(0, 10),
-    approved_for_display: false,
-  });
-
-  if (error) throw new Error(error.message);
-  return newNumber;
-}
-
-export function SaveButton({ className, formData, selectedImages, onSaved }: SaveButtonProps) {
+export function SaveButton({ className, password = "", formData, selectedImages, onSaved }: SaveButtonProps) {
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -61,16 +27,23 @@ export function SaveButton({ className, formData, selectedImages, onSaved }: Sav
     setStatus("idle");
     setErrorMsg(null);
     try {
-      const issueNumber = await getOrCreateDraftIssue();
-      const { error } = await supabase.from("articles").insert({
-        title: formData.title,
-        content: formData.content,
-        issue_number: issueNumber,
-        order_in_issue: formData.orderInIssue,
-        keywords: formData.keywords,
-        related_images: selectedImages,
+      const res = await fetch("/api/save-article", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          password,
+          formData,
+          selectedImages,
+        }),
       });
-      if (error) throw new Error(error.message);
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "שגיאה בשמירת הכתבה");
+      }
+
       setStatus("success");
       onSaved();
     } catch (e: unknown) {
