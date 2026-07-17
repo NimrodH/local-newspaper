@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import type { Route } from "./+types/editor";
 import styles from "./editor.module.css";
+import { NavigationPanel } from "../blocks/__global/navigation-panel";
 import { PasswordLogin } from "../blocks/editor/password-login";
 import { ArticleForm, type ArticleFormData } from "../blocks/editor/article-form";
 import { ImageUpload } from "../blocks/editor/image-upload";
@@ -33,6 +34,7 @@ const EMPTY_FORM: ArticleFormData = {
 };
 
 export default function Editor() {
+  const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [formData, setFormData] = useState<ArticleFormData>(EMPTY_FORM);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
@@ -52,16 +54,31 @@ export default function Editor() {
     setSelectedImages([]);
   };
 
+  const navPanel = (
+    <NavigationPanel
+      activeTab="editor"
+      onPreviousIssues={() => navigate("/?view=previous")}
+      onLatestIssue={() => navigate("/")}
+      onTitles={() => navigate("/?view=titles")}
+      onSearch={() => navigate("/?view=search")}
+      onPdfExport={() => window.print()}
+    />
+  );
+
   if (!password) {
     return (
       <div className={styles.root}>
-        <PasswordLogin onAuthenticated={(pass) => setPassword(pass)} />
+        {navPanel}
+        <div className={styles.container}>
+          <PasswordLogin onAuthenticated={(pass) => setPassword(pass)} />
+        </div>
       </div>
     );
   }
 
   return (
     <div className={styles.root}>
+      {navPanel}
       <div className={styles.container}>
         <div className={styles.pageHeader}>
           <div className={styles.pageHeaderTop}>

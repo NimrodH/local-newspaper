@@ -121,6 +121,18 @@ export default function Reader({ loaderData }: Route.ComponentProps) {
     window.print();
   };
 
+  let activeTab: "previous" | "latest" | "titles" | "search" | "editor" = "latest";
+  if (view === "titles") {
+    activeTab = "titles";
+  } else if (view === "search") {
+    activeTab = "search";
+  } else if (
+    isPreviousIssuesOpen ||
+    (currentIssue && issues.length > 0 && currentIssue.issue_number !== issues[0]?.issue_number)
+  ) {
+    activeTab = "previous";
+  }
+
   return (
     <div className={styles.root}>
       <NavigationPanel
@@ -129,6 +141,7 @@ export default function Reader({ loaderData }: Route.ComponentProps) {
         onTitles={handleTitles}
         onSearch={handleSearch}
         onPdfExport={handlePdfExport}
+        activeTab={activeTab}
       />
 
       {isPreview && (

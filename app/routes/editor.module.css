@@ -1,12 +1,12 @@
 .root {
   direction: rtl;
-  padding: var(--space-xl) var(--space-lg);
   padding-bottom: var(--space-3xl);
 }
 
 .container {
   max-width: 1100px;
   margin: 0 auto;
+  padding: var(--space-xl) var(--space-lg);
 }
 
 .pageHeader {

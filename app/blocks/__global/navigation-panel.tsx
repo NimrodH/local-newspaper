@@ -11,10 +11,11 @@ export interface NavigationPanelProps {
   onTitles?: () => void;
   onSearch?: () => void;
   onPdfExport?: () => void;
+  activeTab?: "previous" | "latest" | "titles" | "search" | "editor";
 }
 
 export function NavigationPanel(props: NavigationPanelProps) {
-  const { className, onPreviousIssues, onLatestIssue, onTitles, onSearch, onPdfExport } = props;
+  const { className, onPreviousIssues, onLatestIssue, onTitles, onSearch, onPdfExport, activeTab } = props;
 
   return (
     <nav className={classnames(style.root, className)}>
@@ -23,22 +24,37 @@ export function NavigationPanel(props: NavigationPanelProps) {
       </div>
       <div className={style.navBar}>
         <div className={style.navButtons}>
-          <button className={style.navBtn} onClick={onPreviousIssues}>
+          <button 
+            className={classnames(style.navBtn, { [style.navBtnActive]: activeTab === "previous" })} 
+            onClick={onPreviousIssues}
+          >
             גיליונות קודמים
           </button>
-          <button className={style.navBtn} onClick={onLatestIssue}>
+          <button 
+            className={classnames(style.navBtn, { [style.navBtnActive]: activeTab === "latest" })} 
+            onClick={onLatestIssue}
+          >
             גיליון אחרון
           </button>
-          <button className={style.navBtn} onClick={onTitles}>
+          <button 
+            className={classnames(style.navBtn, { [style.navBtnActive]: activeTab === "titles" })} 
+            onClick={onTitles}
+          >
             כותרות
           </button>
-          <button className={style.navBtn} onClick={onSearch}>
+          <button 
+            className={classnames(style.navBtn, { [style.navBtnActive]: activeTab === "search" })} 
+            onClick={onSearch}
+          >
             חיפוש
           </button>
           <button className={classnames(style.navBtn, style.navBtnPdf)} onClick={onPdfExport}>
             ייצוא PDF
           </button>
-          <Link to="/editor" className={classnames(style.navBtn, style.navBtnEditor)}>
+          <Link 
+            to="/editor" 
+            className={classnames(style.navBtn, style.navBtnEditor, { [style.navBtnActive]: activeTab === "editor" })}
+          >
             עורך
           </Link>
         </div>
