@@ -1,0 +1,120 @@
+{
+  "title": "Local Newspaper Editor",
+  "description": "A responsive web application for editing and displaying a local newspaper. The app allows end users to read articles from the latest or previous newspaper editions, search by keywords, and view article titles in accordion format. An admin section with password protection enables editors to add new articles, upload images, and manage publication status. All interface content and text are in Hebrew.",
+  "globalHeaderBlocks": [
+    {
+      "name": "Navigation Panel",
+      "description": "Fixed header panel displaying the newspaper logo/banner image from panel.jpg. Contains navigation buttons: Previous Issues, Latest Issue, Titles, Search, and PDF Export. This panel remains fixed at the top of the page during scrolling.",
+      "id": "66682335-a831-45c4-9ea2-82606d27138a"
+    }
+  ],
+  "globalFooterBlocks": [
+    {
+      "name": "Footer",
+      "description": "Simple footer section at the bottom of the page containing copyright and basic information about the newspaper.",
+      "id": "7d91b9a2-6b2b-49bb-83b7-2710e2c37da3"
+    }
+  ],
+  "pages": [
+    {
+      "name": "Reader",
+      "description": "Main reading page for end users. Displays articles from the selected newspaper edition in a scrollable layout. By default shows articles from the latest approved edition, ordered by their position number. Articles display title, content, and associated images. Supports filtering by previous editions, titles accordion view, keyword search, and PDF export.",
+      "uri": "/",
+      "blocks": [
+        {
+          "name": "Articles List",
+          "description": "Main content area displaying articles stacked vertically. Each article shows title, content text, and associated images below the text. Articles are ordered by their position number within the selected edition.",
+          "id": "61506c5f-39d5-4cf1-bb2a-abc6c7b09357"
+        },
+        {
+          "name": "Previous Issues Menu",
+          "description": "Dropdown menu that opens when 'Previous Issues' button is clicked, showing a list of all newspaper issue dates. Clicking a date filters the articles display to show only articles from that issue.",
+          "id": "fdd0c115-3839-4c13-9bc9-f635924d9eb9"
+        },
+        {
+          "name": "Titles Accordion",
+          "description": "Accordion-style list view showing only article titles from the current edition. Clicking a title expands to show the full article content and images.",
+          "id": "238c7f12-1166-448d-a043-9fe4a5b4a831"
+        },
+        {
+          "name": "Search Filter",
+          "description": "Search input field that filters articles by keywords. Displays articles whose keywords contain at least one of the words entered in the search field.",
+          "id": "6798548e-f82a-4c20-9253-9dc9ba0bfd8d"
+        }
+      ],
+      "id": "7ba66a42-7c27-4497-9d55-cd2b74c90dac"
+    },
+    {
+      "name": "Editor",
+      "description": "Password-protected admin page for newspaper editors. Allows adding new articles with text content, selecting and uploading images, and managing article metadata. Automatically creates new editions as needed and saves articles to the database.",
+      "uri": "/editor",
+      "blocks": [
+        {
+          "name": "Password Login",
+          "description": "Password input field for editor authentication. Must match the password stored in Supabase before granting access to editing functions.",
+          "id": "41e75468-5fc9-4ee5-a214-5d030fbb86b0"
+        },
+        {
+          "name": "Article Form",
+          "description": "Form with text input fields for article title, content, and keywords. Allows editors to enter all text-based article information required for publication.",
+          "id": "625dc837-55c7-4093-8da1-7bc45028c276"
+        },
+        {
+          "name": "Image Upload",
+          "description": "Interface for uploading images from clipboard or file system to Supabase storage. Uploaded images are associated with the current article.",
+          "id": "94ed01eb-edd0-4edd-b2c5-2455def6edb6"
+        },
+        {
+          "name": "Image Selection",
+          "description": "Interface to browse and select existing images from Supabase storage and associate them with the current article being edited.",
+          "id": "ebc6c816-e004-41d3-a289-4b77dc71980c"
+        },
+        {
+          "name": "Save Button",
+          "description": "Button that saves the article to the database. Automatically creates a new edition in the editions table if no unapproved edition exists. Sets the edition number to one higher than the last approved edition.",
+          "id": "c82aa194-0656-4c7d-bd51-37e32684f3fa"
+        }
+      ],
+      "id": "34e35d0c-d586-4c1b-b7fa-9d9935e223ae"
+    }
+  ],
+  "features": [
+    {
+      "name": "Latest Edition Display",
+      "description": "Automatically displays all articles from the most recently approved newspaper edition when the app loads or when the Latest Issue button is clicked. Articles are ordered by their position number within the edition.",
+      "id": "0faba5a7-eb5c-445c-9583-12a63cb2d5c9"
+    },
+    {
+      "name": "Previous Editions Navigation",
+      "description": "Allows users to browse and select from all previous newspaper editions via a dropdown menu sorted by date. Clicking a date filters the display to show only articles from that edition.",
+      "id": "4eb1b30b-2ada-4ab4-91d7-7e4c50df78e9"
+    },
+    {
+      "name": "Article Titles Accordion",
+      "description": "Provides a compact accordion-style view showing only article titles from the current edition. Clicking a title expands to display the full article content and associated images, allowing quick navigation between articles.",
+      "id": "b905bf18-0ad7-4f90-8925-e5cc7ecd6b1b"
+    },
+    {
+      "name": "Keyword Search",
+      "description": "Enables users to filter articles by entering keywords. The search displays all articles whose keyword field contains at least one of the words entered in the search field.",
+      "id": "5ca93da0-fb45-487e-a594-9fea2fff78ef"
+    },
+    {
+      "name": "Article Management",
+      "description": "Password-protected interface for editors to add new articles by entering title, content, and keywords. Includes automatic edition number assignment based on the last approved edition.",
+      "id": "66097572-a89d-4ce4-b5e3-3ae3a095d026"
+    },
+    {
+      "name": "Image Upload and Association",
+      "description": "Allows editors to upload images from clipboard to Supabase storage and associate them with articles. Supports browsing and selecting existing images from storage to link with the current article.",
+      "id": "55982a2f-96b4-421b-99bb-1e367375658f"
+    },
+    {
+      "name": "Edition Management",
+      "description": "Automatically creates new newspaper editions when articles are saved to an unapproved edition. Tracks edition numbers, dates, and approval status for publication.",
+      "id": "5deb4f0d-b13c-4321-86cf-e99a184f074f"
+    }
+  ],
+  "stylingGuidelines": "Clean, modern design with responsive layout that adapts to all screen sizes. Use Hebrew-friendly typography and right-to-left text direction. Maintain consistent spacing and visual hierarchy with clear separation between articles. Use the provided panel.jpg banner as the fixed header element.",
+  "technicalDetails": "Application requires Supabase backend with the following database schema: Articles table (title, content, issue_number, order_in_issue, keywords, related_images), Issues table (issue_number, issue_date, approved_for_display), and Usage Tracking table (item_name, click_count). Editor page requires password authentication stored in Supabase. Images must be stored in Supabase Storage. All interface text and content must support Hebrew language display with right-to-left text direction."
+}
