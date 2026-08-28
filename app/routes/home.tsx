@@ -9,7 +9,7 @@ import { PreviousIssuesMenu } from "../blocks/home/previous-issues-menu";
 import { TitlesAccordion } from "../blocks/home/titles-accordion";
 import { SearchFilter } from "../blocks/home/search-filter";
 
-/**
+/**--
  * Server-side loader. Fetches issues and articles using the admin client (which bypasses RLS).
  * If preview=true, loads both draft and approved issues.
  * If preview=false, loads only approved issues.
