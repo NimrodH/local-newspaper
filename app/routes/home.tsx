@@ -24,7 +24,8 @@ export async function loader({ request }: Route.LoaderArgs) {
   const { data: issuesData, error: issuesErr } = await admin
     .from("issues")
     .select("*")
-    .order("issue_number", { ascending: false });
+    .order("order_number", { ascending: false })
+    .order("issue_date", { ascending: false });
 
   if (issuesErr) {
     console.error("Loader fetchIssues error:", issuesErr.message);
@@ -153,7 +154,7 @@ export default function Reader({ loaderData }: Route.ComponentProps) {
 
       {currentIssue && (
         <div className={styles.issueLabel}>
-          <span className={styles.issueLabelText}>גיליון {currentIssue.issue_number} &bull; {new Date(currentIssue.issue_date).toLocaleDateString("he-IL", { year: "numeric", month: "long", day: "numeric" })}</span>
+          <span className={styles.issueLabelText}>גיליון {currentIssue.order_number ?? currentIssue.issue_number} &bull; {new Date(currentIssue.issue_date).toLocaleDateString("he-IL", { year: "numeric", month: "long", day: "numeric" })}</span>
         </div>
       )}
 

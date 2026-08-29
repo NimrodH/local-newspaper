@@ -14,18 +14,20 @@ async function getOrCreateDraftIssue(adminClient: any): Promise<number> {
   }
 
   // Create new issue: issue_number = last approved + 1
-  const { data: approved } = await adminClient
+  const { data: latestIssue } = await adminClient
     .from("issues")
-    .select("issue_number")
-    .eq("approved_for_display", true)
+    .select("issue_number, order_number, issue_date")
+    .order("issue_date", { ascending: false })
     .order("issue_number", { ascending: false })
     .limit(1);
 
-  const lastApproved = approved && approved.length > 0 ? (approved[0].issue_number as number) : 0;
+  const lastApproved = latestIssue && latestIssue.length > 0 ? (latestIssue[0].issue_number as number) : 0;
+  const nextOrderNumber = latestIssue && latestIssue.length > 0 ? (latestIssue[0].order_number as number) + 1 : 1;
   const newNumber = lastApproved + 1;
 
   const { error } = await adminClient.from("issues").insert({
     issue_number: newNumber,
+    order_number: nextOrderNumber,
     issue_date: new Date().toISOString().slice(0, 10),
     approved_for_display: false,
   });

@@ -18,6 +18,7 @@ export function createAdminClient() {
 export type Issue = {
   id: number;
   issue_number: number;
+  order_number: number;
   issue_date: string;
   approved_for_display: boolean;
 };

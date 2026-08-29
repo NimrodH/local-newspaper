@@ -68,7 +68,7 @@ export function PreviousIssuesMenu({
                     onSelectIssue(issue);
                   }}
                 >
-                  <span className={style.issueNum}>גיליון {issue.issue_number}</span>
+                  <span className={style.issueNum}>גיליון {issue.order_number ?? issue.issue_number}</span>
                   <span className={style.issueDate}>{formatDate(issue.issue_date)}</span>
                 </button>
               </li>

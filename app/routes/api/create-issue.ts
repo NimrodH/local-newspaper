@@ -15,7 +15,8 @@ export async function action({ request }: { request: Request }) {
     const admin = createAdminClient();
     const { data: latestIssue, error: latestIssueError } = await admin
       .from("issues")
-      .select("issue_number")
+      .select("order_number, issue_date, issue_number")
+      .order("issue_date", { ascending: false })
       .order("issue_number", { ascending: false })
       .limit(1)
       .maybeSingle();
@@ -25,14 +26,16 @@ export async function action({ request }: { request: Request }) {
     }
 
     const issueNumber = (latestIssue?.issue_number ?? 0) + 1;
+    const orderNumber = (latestIssue?.order_number ?? 0) + 1;
     const { data: issue, error: createError } = await admin
       .from("issues")
       .insert({
         issue_number: issueNumber,
+        order_number: orderNumber,
         issue_date: new Date().toISOString().slice(0, 10),
         approved_for_display: false,
       })
-      .select("issue_number")
+      .select("issue_number, order_number")
       .single();
 
     if (createError) {

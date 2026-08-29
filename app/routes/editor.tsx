@@ -20,7 +20,8 @@ export async function loader({ request }: Route.LoaderArgs) {
   const { data: issuesData, error: issuesError } = await admin
     .from("issues")
     .select("*")
-    .order("issue_number", { ascending: false });
+    .order("order_number", { ascending: false })
+    .order("issue_date", { ascending: false });
 
   const issues = (issuesData as Issue[]) ?? [];
   const selectedIssue =
@@ -192,7 +193,7 @@ export default function Editor({ loaderData }: Route.ComponentProps) {
                     <option value="">בחרו גיליון</option>
                     {loaderData.issues.map((issue) => (
                       <option key={issue.id} value={issue.issue_number}>
-                        גיליון {issue.issue_number}{issue.approved_for_display ? "" : " (טיוטה)"}
+                        גיליון {issue.order_number ?? issue.issue_number}{issue.approved_for_display ? "" : " (טיוטה)"}
                       </option>
                     ))}
                   </select>
