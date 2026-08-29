@@ -6,9 +6,11 @@ import style from "./publish-issue-button.module.css";
 export interface PublishIssueButtonProps {
   className?: string;
   password?: string;
+  issueNumber: number;
+  onPublished: () => void;
 }
 
-export function PublishIssueButton({ className, password = "" }: PublishIssueButtonProps) {
+export function PublishIssueButton({ className, password = "", issueNumber, onPublished }: PublishIssueButtonProps) {
   const [publishing, setPublishing] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error" | "none">("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -24,7 +26,7 @@ export function PublishIssueButton({ className, password = "" }: PublishIssueBut
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ password, issueNumber }),
       });
 
       const data = await res.json();
@@ -34,6 +36,7 @@ export function PublishIssueButton({ className, password = "" }: PublishIssueBut
 
       setPublishedNumber(data.issueNumber);
       setStatus("success");
+      onPublished();
     } catch (e: unknown) {
       setStatus("error");
       setErrorMsg(e instanceof Error ? e.message : "שגיאה בפרסום");

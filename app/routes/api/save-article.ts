@@ -40,7 +40,7 @@ export async function action({ request }: { request: Request }) {
   }
 
   try {
-    const { password, formData, selectedImages } = await request.json();
+    const { password, articleId, formData, selectedImages } = await request.json();
     const correctPassword = process.env.EDITOR_PASSWORD;
     if (!correctPassword || password !== correctPassword) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
@@ -51,6 +51,37 @@ export async function action({ request }: { request: Request }) {
     }
 
     const adminClient = createAdminClient();
+
+    if (articleId) {
+      const { data: article, error: articleError } = await adminClient
+        .from("articles")
+        .select("issue_number")
+        .eq("id", articleId)
+        .single();
+
+      if (articleError || !article) {
+        return Response.json({ error: articleError?.message || "הכתבה לא נמצאה" }, { status: 404 });
+      }
+
+      const { error } = await adminClient
+        .from("articles")
+        .update({
+          title: formData.title,
+          content: formData.content,
+          issue_number: article.issue_number,
+          order_in_issue: formData.orderInIssue || 1,
+          keywords: formData.keywords || "",
+          related_images: selectedImages || [],
+        })
+        .eq("id", articleId);
+
+      if (error) {
+        return Response.json({ error: error.message }, { status: 500 });
+      }
+
+      return Response.json({ success: true, issueNumber: article.issue_number });
+    }
+
     const issueNumber = await getOrCreateDraftIssue(adminClient);
 
     const { error } = await adminClient.from("articles").insert({
