@@ -6,19 +6,25 @@ export async function action({ request }: { request: Request }) {
   }
 
   try {
-    const { password } = await request.json();
+    const { password, issueNumber } = await request.json();
     const correctPassword = process.env.EDITOR_PASSWORD;
     if (!correctPassword || password !== correctPassword) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const adminClient = createAdminClient();
-    const { data: drafts, error: fetchError } = await adminClient
+    let draftsQuery = adminClient
       .from("issues")
       .select("*")
-      .eq("approved_for_display", false)
-      .order("issue_number", { ascending: false })
-      .limit(1);
+      .eq("approved_for_display", false);
+
+    if (Number.isInteger(issueNumber)) {
+      draftsQuery = draftsQuery.eq("issue_number", issueNumber);
+    } else {
+      draftsQuery = draftsQuery.order("issue_number", { ascending: false }).limit(1);
+    }
+
+    const { data: drafts, error: fetchError } = await draftsQuery;
 
     if (fetchError) {
       return Response.json({ error: fetchError.message }, { status: 500 });

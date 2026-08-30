@@ -10,12 +10,11 @@ export interface NavigationPanelProps {
   onLatestIssue?: () => void;
   onTitles?: () => void;
   onSearch?: () => void;
-  onPdfExport?: () => void;
   activeTab?: "previous" | "latest" | "titles" | "search" | "editor";
 }
 
 export function NavigationPanel(props: NavigationPanelProps) {
-  const { className, onPreviousIssues, onLatestIssue, onTitles, onSearch, onPdfExport, activeTab } = props;
+  const { className, onPreviousIssues, onLatestIssue, onTitles, onSearch, activeTab } = props;
 
   return (
     <nav className={classnames(style.root, className)}>
@@ -47,9 +46,6 @@ export function NavigationPanel(props: NavigationPanelProps) {
             onClick={onSearch}
           >
             חיפוש
-          </button>
-          <button className={classnames(style.navBtn, style.navBtnPdf)} onClick={onPdfExport}>
-            ייצוא PDF
           </button>
           <Link 
             to="/editor" 

@@ -9,7 +9,7 @@ import { PreviousIssuesMenu } from "../blocks/home/previous-issues-menu";
 import { TitlesAccordion } from "../blocks/home/titles-accordion";
 import { SearchFilter } from "../blocks/home/search-filter";
 
-/**
+/**--
  * Server-side loader. Fetches issues and articles using the admin client (which bypasses RLS).
  * If preview=true, loads both draft and approved issues.
  * If preview=false, loads only approved issues.
@@ -24,7 +24,8 @@ export async function loader({ request }: Route.LoaderArgs) {
   const { data: issuesData, error: issuesErr } = await admin
     .from("issues")
     .select("*")
-    .order("issue_number", { ascending: false });
+    .order("order_number", { ascending: false })
+    .order("issue_date", { ascending: false });
 
   if (issuesErr) {
     console.error("Loader fetchIssues error:", issuesErr.message);
@@ -117,10 +118,6 @@ export default function Reader({ loaderData }: Route.ComponentProps) {
     handleLoadLatest();
   };
 
-  const handlePdfExport = () => {
-    window.print();
-  };
-
   let activeTab: "previous" | "latest" | "titles" | "search" | "editor" = "latest";
   if (view === "titles") {
     activeTab = "titles";
@@ -140,7 +137,6 @@ export default function Reader({ loaderData }: Route.ComponentProps) {
         onLatestIssue={handleLatestIssueFull}
         onTitles={handleTitles}
         onSearch={handleSearch}
-        onPdfExport={handlePdfExport}
         activeTab={activeTab}
       />
 
@@ -153,7 +149,7 @@ export default function Reader({ loaderData }: Route.ComponentProps) {
 
       {currentIssue && (
         <div className={styles.issueLabel}>
-          <span className={styles.issueLabelText}>גיליון {currentIssue.issue_number} &bull; {new Date(currentIssue.issue_date).toLocaleDateString("he-IL", { year: "numeric", month: "long", day: "numeric" })}</span>
+          <span className={styles.issueLabelText}>גיליון {currentIssue.order_number ?? currentIssue.issue_number} &bull; {new Date(currentIssue.issue_date).toLocaleDateString("he-IL", { year: "numeric", month: "long", day: "numeric" })}</span>
         </div>
       )}
 

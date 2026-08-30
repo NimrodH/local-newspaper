@@ -62,16 +62,8 @@
   box-shadow: inset 0 -3px 0 0 var(--color-secondary);
 }
 
-.navBtnPdf {
-  background-color: var(--color-secondary);
-  margin-inline-start: auto;
-}
-
-.navBtnPdf:hover {
-  background-color: #a93226;
-}
-
 .navBtnEditor {
+  display: none;
   background-color: rgba(255,255,255,0.12);
   border: 1px solid rgba(255,255,255,0.3);
   font-size: var(--text-xs);
@@ -86,9 +78,5 @@
 @media (max-width: 600px) {
   .navButtons {
     justify-content: center;
-  }
-
-  .navBtnPdf {
-    margin-inline-start: unset;
   }
 }

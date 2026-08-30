@@ -7,12 +7,13 @@ import type { ArticleFormData } from "./article-form";
 export interface SaveButtonProps {
   className?: string;
   password?: string;
+  articleId?: number | null;
   formData: ArticleFormData;
   selectedImages: string[];
-  onSaved: () => void;
+  onSaved: (issueNumber?: number) => void;
 }
 
-export function SaveButton({ className, password = "", formData, selectedImages, onSaved }: SaveButtonProps) {
+export function SaveButton({ className, password = "", articleId = null, formData, selectedImages, onSaved }: SaveButtonProps) {
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -34,6 +35,7 @@ export function SaveButton({ className, password = "", formData, selectedImages,
         },
         body: JSON.stringify({
           password,
+          articleId,
           formData,
           selectedImages,
         }),
@@ -45,7 +47,7 @@ export function SaveButton({ className, password = "", formData, selectedImages,
       }
 
       setStatus("success");
-      onSaved();
+      onSaved(data.issueNumber);
     } catch (e: unknown) {
       setStatus("error");
       setErrorMsg(e instanceof Error ? e.message : "שגיאה בשמירה");

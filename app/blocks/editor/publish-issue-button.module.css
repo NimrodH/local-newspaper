@@ -38,6 +38,22 @@
   background-color: var(--color-success-hover, #15803d);
 }
 
+.unpublishBtn {
+  background-color: var(--color-error, #dc2626);
+}
+
+.unpublishBtn:hover:not(:disabled) {
+  background-color: #b91c1c;
+}
+
+.deleteBtn {
+  background-color: var(--color-error, #dc2626);
+}
+
+.deleteBtn:hover:not(:disabled) {
+  background-color: #b91c1c;
+}
+
 .btnPublishing {
   opacity: 0.7;
   cursor: not-allowed;

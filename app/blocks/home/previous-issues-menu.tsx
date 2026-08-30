@@ -66,10 +66,9 @@ export function PreviousIssuesMenu({
                   className={classnames(style.issueBtn, currentIssue?.id === issue.id && style.active)}
                   onClick={() => {
                     onSelectIssue(issue);
-                    onClose();
                   }}
                 >
-                  <span className={style.issueNum}>גיליון {issue.issue_number}</span>
+                  <span className={style.issueNum}>גיליון {issue.order_number ?? issue.issue_number}</span>
                   <span className={style.issueDate}>{formatDate(issue.issue_date)}</span>
                 </button>
               </li>
