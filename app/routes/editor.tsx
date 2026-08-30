@@ -148,7 +148,6 @@ export default function Editor({ loaderData }: Route.ComponentProps) {
       onLatestIssue={() => navigate("/")}
       onTitles={() => navigate("/?view=titles")}
       onSearch={() => navigate("/?view=search")}
-      onPdfExport={() => window.print()}
     />
   );
 

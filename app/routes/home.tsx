@@ -118,10 +118,6 @@ export default function Reader({ loaderData }: Route.ComponentProps) {
     handleLoadLatest();
   };
 
-  const handlePdfExport = () => {
-    window.print();
-  };
-
   let activeTab: "previous" | "latest" | "titles" | "search" | "editor" = "latest";
   if (view === "titles") {
     activeTab = "titles";
@@ -141,7 +137,6 @@ export default function Reader({ loaderData }: Route.ComponentProps) {
         onLatestIssue={handleLatestIssueFull}
         onTitles={handleTitles}
         onSearch={handleSearch}
-        onPdfExport={handlePdfExport}
         activeTab={activeTab}
       />
 

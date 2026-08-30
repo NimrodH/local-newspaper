@@ -1,3 +1,9 @@
 [build]
   command = "npm run build"
   publish = "build/client"
+
+[[headers]]
+  for = "/*"
+
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
