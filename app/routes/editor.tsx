@@ -65,10 +65,15 @@ const EMPTY_FORM: ArticleFormData = {
   orderInIssue: 1,
 };
 
+// Not localStorage: this should clear when the tab closes, not persist indefinitely.
+const PASSWORD_STORAGE_KEY = "editorPassword";
+
 export default function Editor({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const { revalidate } = useRevalidator();
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(() =>
+    typeof window === "undefined" ? "" : (sessionStorage.getItem(PASSWORD_STORAGE_KEY) ?? "")
+  );
   const [formData, setFormData] = useState<ArticleFormData>(EMPTY_FORM);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [selectedArticleId, setSelectedArticleId] = useState<number | null>(null);
@@ -107,6 +112,16 @@ export default function Editor({ loaderData }: Route.ComponentProps) {
 
   const handleImageUploaded = (path: string) => {
     setSelectedImages((prev) => [...prev, path]);
+  };
+
+  const handleAuthenticated = (pass: string) => {
+    setPassword(pass);
+    sessionStorage.setItem(PASSWORD_STORAGE_KEY, pass);
+  };
+
+  const handleLogout = () => {
+    setPassword("");
+    sessionStorage.removeItem(PASSWORD_STORAGE_KEY);
   };
 
   const handleSaved = (issueNumber?: number) => {
@@ -156,7 +171,7 @@ export default function Editor({ loaderData }: Route.ComponentProps) {
       <div className={styles.root}>
         {navPanel}
         <div className={styles.container}>
-          <PasswordLogin onAuthenticated={(pass) => setPassword(pass)} />
+          <PasswordLogin onAuthenticated={handleAuthenticated} />
         </div>
       </div>
     );
@@ -169,9 +184,21 @@ export default function Editor({ loaderData }: Route.ComponentProps) {
         <div className={styles.pageHeader}>
           <div className={styles.pageHeaderTop}>
             <h1 className={styles.pageTitle}>עריכת כתבות</h1>
-            <Link to="/?preview=true" className={styles.previewBtn}>
-              👁 תצוגה מקדימה
-            </Link>
+            <div className={styles.headerActions}>
+              <Link
+                to={
+                  loaderData.selectedIssue
+                    ? `/?preview=true&issue=${loaderData.selectedIssue.issue_number}`
+                    : "/?preview=true"
+                }
+                className={styles.previewBtn}
+              >
+                👁 תצוגה מקדימה
+              </Link>
+              <button type="button" className={styles.logoutBtn} onClick={handleLogout}>
+                התנתקות
+              </button>
+            </div>
           </div>
           <p className={styles.pageSubtitle}>הוסיפו כתבות חדשות לגיליון</p>
         </div>
@@ -234,6 +261,8 @@ export default function Editor({ loaderData }: Route.ComponentProps) {
               <SaveButton
                 password={password}
                 articleId={selectedArticleId}
+                issueNumber={loaderData.selectedIssue?.issue_number ?? null}
+                issueApproved={loaderData.selectedIssue?.approved_for_display ?? false}
                 formData={formData}
                 selectedImages={selectedImages}
                 onSaved={handleSaved}

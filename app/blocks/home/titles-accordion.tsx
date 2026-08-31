@@ -16,6 +16,26 @@ function getImageUrl(path: string): string {
   return data.publicUrl;
 }
 
+// Older articles stored plain text; new ones store Tiptap-generated HTML.
+const isHtmlContent = (content: string) => /<[a-z][\s\S]*>/i.test(content);
+
+function ArticleContent({ content }: { content: string }) {
+  if (isHtmlContent(content)) {
+    return <div className={style.content} dir="rtl" dangerouslySetInnerHTML={{ __html: content }} />;
+  }
+  return (
+    <div className={style.content}>
+      {content.split("\n").map((para, i) =>
+        para.trim() ? (
+          <p key={i} className={style.paragraph}>
+            {para}
+          </p>
+        ) : null
+      )}
+    </div>
+  );
+}
+
 function AccordionItem({ article }: { article: Article }) {
   const [open, setOpen] = useState(false);
 
@@ -29,15 +49,7 @@ function AccordionItem({ article }: { article: Article }) {
       </button>
       {open && (
         <div className={style.itemBody}>
-          <div className={style.content}>
-            {article.content.split("\n").map((para, i) =>
-              para.trim() ? (
-                <p key={i} className={style.paragraph}>
-                  {para}
-                </p>
-              ) : null
-            )}
-          </div>
+          <ArticleContent content={article.content} />
           {article.related_images && article.related_images.length > 0 && (
             <div className={style.images}>
               {article.related_images.map((img, i) => (

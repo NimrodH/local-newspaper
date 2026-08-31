@@ -21,6 +21,30 @@
   flex-direction: row-reverse;
 }
 
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.logoutBtn {
+  font-family: var(--family-hebrew);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  background: none;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-xs) var(--space-md);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.logoutBtn:hover {
+  border-color: var(--color-error);
+  color: var(--color-error);
+}
+
 .previewBtn {
   display: inline-flex;
   align-items: center;

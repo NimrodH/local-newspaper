@@ -8,12 +8,23 @@ export interface SaveButtonProps {
   className?: string;
   password?: string;
   articleId?: number | null;
+  issueNumber?: number | null;
+  issueApproved?: boolean;
   formData: ArticleFormData;
   selectedImages: string[];
   onSaved: (issueNumber?: number) => void;
 }
 
-export function SaveButton({ className, password = "", articleId = null, formData, selectedImages, onSaved }: SaveButtonProps) {
+export function SaveButton({
+  className,
+  password = "",
+  articleId = null,
+  issueNumber = null,
+  issueApproved = false,
+  formData,
+  selectedImages,
+  onSaved,
+}: SaveButtonProps) {
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -23,6 +34,12 @@ export function SaveButton({ className, password = "", articleId = null, formDat
       setStatus("error");
       setErrorMsg("חובה להזין כותרת.");
       return;
+    }
+    if (!articleId && issueApproved) {
+      const confirmed = window.confirm(
+        `הגיליון הנבחר כבר פורסם. האם להוסיף את הכתבה אליו בכל זאת?`
+      );
+      if (!confirmed) return;
     }
     setSaving(true);
     setStatus("idle");
@@ -36,6 +53,7 @@ export function SaveButton({ className, password = "", articleId = null, formDat
         body: JSON.stringify({
           password,
           articleId,
+          issueNumber,
           formData,
           selectedImages,
         }),

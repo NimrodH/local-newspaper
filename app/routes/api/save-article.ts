@@ -42,7 +42,7 @@ export async function action({ request }: { request: Request }) {
   }
 
   try {
-    const { password, articleId, formData, selectedImages } = await request.json();
+    const { password, articleId, issueNumber: requestedIssueNumber, formData, selectedImages } = await request.json();
     const correctPassword = process.env.EDITOR_PASSWORD;
     if (!correctPassword || password !== correctPassword) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
@@ -84,7 +84,18 @@ export async function action({ request }: { request: Request }) {
       return Response.json({ success: true, issueNumber: article.issue_number });
     }
 
-    const issueNumber = await getOrCreateDraftIssue(adminClient);
+    let issueNumber: number | null = null;
+    if (requestedIssueNumber) {
+      const { data: issue } = await adminClient
+        .from("issues")
+        .select("issue_number")
+        .eq("issue_number", requestedIssueNumber)
+        .single();
+      issueNumber = issue?.issue_number ?? null;
+    }
+    if (!issueNumber) {
+      issueNumber = await getOrCreateDraftIssue(adminClient);
+    }
 
     const { error } = await adminClient.from("articles").insert({
       title: formData.title,
