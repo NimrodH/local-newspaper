@@ -185,7 +185,14 @@ export default function Editor({ loaderData }: Route.ComponentProps) {
           <div className={styles.pageHeaderTop}>
             <h1 className={styles.pageTitle}>עריכת כתבות</h1>
             <div className={styles.headerActions}>
-              <Link to="/?preview=true" className={styles.previewBtn}>
+              <Link
+                to={
+                  loaderData.selectedIssue
+                    ? `/?preview=true&issue=${loaderData.selectedIssue.issue_number}`
+                    : "/?preview=true"
+                }
+                className={styles.previewBtn}
+              >
                 👁 תצוגה מקדימה
               </Link>
               <button type="button" className={styles.logoutBtn} onClick={handleLogout}>
@@ -254,6 +261,8 @@ export default function Editor({ loaderData }: Route.ComponentProps) {
               <SaveButton
                 password={password}
                 articleId={selectedArticleId}
+                issueNumber={loaderData.selectedIssue?.issue_number ?? null}
+                issueApproved={loaderData.selectedIssue?.approved_for_display ?? false}
                 formData={formData}
                 selectedImages={selectedImages}
                 onSaved={handleSaved}
