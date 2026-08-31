@@ -30,11 +30,32 @@
   gap: var(--space-sm);
 }
 
-.paragraph {
+.paragraph,
+.articleContent p {
   font-family: var(--family-hebrew);
   font-size: var(--text-base);
   line-height: 1.8;
   color: var(--color-text);
+}
+
+.articleContent ul,
+.articleContent ol {
+  padding-inline-start: 1.5em;
+  font-family: var(--family-hebrew);
+  font-size: var(--text-base);
+  line-height: 1.8;
+  color: var(--color-text);
+}
+
+.articleContent h2 {
+  font-family: var(--family-display);
+  font-size: var(--text-xl);
+  color: var(--color-primary);
+}
+
+.articleContent a {
+  color: var(--color-primary);
+  text-decoration: underline;
 }
 
 .images {

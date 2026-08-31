@@ -6,4 +6,4 @@
   for = "/*"
 
   [headers.values]
-    X-Robots-Tag = "noindex, nofollow"
+    X-Robots-Tag = "noindex, nofollow"npm dev run

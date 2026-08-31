@@ -46,9 +46,58 @@
 }
 
 .textarea {
-  resize: vertical;
   min-height: 200px;
   line-height: 1.7;
+  cursor: text;
+}
+
+.editorArea {
+  min-height: 200px;
+  outline: none;
+}
+
+.editorArea p {
+  margin: 0 0 var(--space-sm);
+}
+
+.editorArea ul,
+.editorArea ol {
+  padding-inline-start: 1.5em;
+  margin: 0 0 var(--space-sm);
+}
+
+.editorArea a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.toolbar {
+  display: flex;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-xs);
+}
+
+.toolbarBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.toolbarBtn:hover {
+  border-color: var(--color-primary);
+}
+
+.toolbarBtnActive {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 .numberInput {

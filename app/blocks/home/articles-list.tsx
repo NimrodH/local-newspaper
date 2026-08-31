@@ -16,19 +16,31 @@ function getImageUrl(path: string): string {
   return data.publicUrl;
 }
 
+// Older articles stored plain text; new ones store Tiptap-generated HTML.
+const isHtmlContent = (content: string) => /<[a-z][\s\S]*>/i.test(content);
+
+function ArticleContent({ content }: { content: string }) {
+  if (isHtmlContent(content)) {
+    return <div className={style.articleContent} dir="rtl" dangerouslySetInnerHTML={{ __html: content }} />;
+  }
+  return (
+    <div className={style.articleContent}>
+      {content.split("\n").map((para, i) =>
+        para.trim() ? (
+          <p key={i} className={style.paragraph}>
+            {para}
+          </p>
+        ) : null
+      )}
+    </div>
+  );
+}
+
 function ArticleCard({ article }: { article: Article }) {
   return (
     <article className={style.article}>
       <h2 className={style.articleTitle}>{article.title}</h2>
-      <div className={style.articleContent}>
-        {article.content.split("\n").map((para, i) =>
-          para.trim() ? (
-            <p key={i} className={style.paragraph}>
-              {para}
-            </p>
-          ) : null
-        )}
-      </div>
+      <ArticleContent content={article.content} />
       {article.related_images && article.related_images.length > 0 && (
         <div className={style.images}>
           {article.related_images.map((img, i) => (
