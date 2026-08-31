@@ -9,7 +9,7 @@ export interface PublishIssueButtonProps {
   issueNumber: number;
   onPublished: () => void;
 }
-
+// Component for publishing an issue
 export function PublishIssueButton({ className, password = "", issueNumber, onPublished }: PublishIssueButtonProps) {
   const [publishing, setPublishing] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error" | "none">("idle");
