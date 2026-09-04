@@ -5,6 +5,7 @@ export default [
   route("/editor", "routes/editor.tsx"),
   route("/api/upload-image", "routes/api/upload-image.ts"),
   route("/api/list-images", "routes/api/list-images.ts"),
+  route("/api/track-click", "routes/api/track-click.ts"),
   route("/api/save-article", "routes/api/save-article.ts"),
   route("/api/create-issue", "routes/api/create-issue.ts"),
   route("/api/publish-issue", "routes/api/publish-issue.ts"),

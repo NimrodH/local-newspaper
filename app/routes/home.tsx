@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router";
 import { NavigationPanel } from "../blocks/__global/navigation-panel";
 import styles from "./home.module.css";
 import { createAdminClient, type Article, type Issue } from "~/lib/supabase";
+import { trackClick } from "~/lib/track-click";
 import { useHomeState } from "~/hooks/use-home-state";
 import { ArticlesList } from "../blocks/home/articles-list";
 import { PreviousIssuesMenu } from "../blocks/home/previous-issues-menu";
@@ -114,8 +115,24 @@ export default function Reader({ loaderData }: Route.ComponentProps) {
   };
 
   const handleLatestIssueFull = () => {
+    trackClick("latest-issue");
     handleLatestIssue();
     handleLoadLatest();
+  };
+
+  const handlePreviousIssuesTracked = () => {
+    trackClick("previous-issues");
+    handlePreviousIssues();
+  };
+
+  const handleTitlesTracked = () => {
+    trackClick("titles");
+    handleTitles();
+  };
+
+  const handleSearchTracked = () => {
+    trackClick("search-issues");
+    handleSearch();
   };
 
   let activeTab: "previous" | "latest" | "titles" | "search" | "editor" = "latest";
@@ -133,10 +150,10 @@ export default function Reader({ loaderData }: Route.ComponentProps) {
   return (
     <div className={styles.root}>
       <NavigationPanel
-        onPreviousIssues={handlePreviousIssues}
+        onPreviousIssues={handlePreviousIssuesTracked}
         onLatestIssue={handleLatestIssueFull}
-        onTitles={handleTitles}
-        onSearch={handleSearch}
+        onTitles={handleTitlesTracked}
+        onSearch={handleSearchTracked}
         activeTab={activeTab}
       />
 
