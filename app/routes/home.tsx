@@ -1,4 +1,5 @@
 import type { Route } from "./+types/home";
+import { useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router";
 import { NavigationPanel } from "../blocks/__global/navigation-panel";
 import styles from "./home.module.css";
@@ -78,6 +79,17 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Reader({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const isPreview = loaderData.preview;
+
+  // Count an app entry once per page load (covers "/" and "/?view=titles").
+  // Preview mode is excluded so editor previews don't inflate the counter.
+  const entryTrackedRef = useRef(false);
+  useEffect(() => {
+    if (entryTrackedRef.current || isPreview) {
+      return;
+    }
+    entryTrackedRef.current = true;
+    trackClick("enter-app");
+  }, [isPreview]);
 
   const articles = loaderData.articles;
   const issues = loaderData.issues;
