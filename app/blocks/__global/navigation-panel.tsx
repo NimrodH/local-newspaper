@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import style from "./navigation-panel.module.css";
 
 const PANEL_BANNER = "/panel.svg";
+const SIDE_LOGO = "/greenLogo.jpg";
 
 export interface NavigationPanelProps {
   className?: string;
@@ -11,15 +12,20 @@ export interface NavigationPanelProps {
   onTitles?: () => void;
   onSearch?: () => void;
   activeTab?: "previous" | "latest" | "titles" | "search" | "editor";
+  editorHref?: string;
 }
 
 export function NavigationPanel(props: NavigationPanelProps) {
-  const { className, onPreviousIssues, onLatestIssue, onTitles, onSearch, activeTab } = props;
+  const { className, onPreviousIssues, onLatestIssue, onTitles, onSearch, activeTab, editorHref = "/editor" } = props;
 
   return (
     <nav className={classnames(style.root, className)}>
       <div className={style.banner}>
-        <img src={PANEL_BANNER} alt="מתחת לסלע - רקפת משתפת" className={style.bannerImage} />
+        <div className={style.bannerInner}>
+          <img src={PANEL_BANNER} alt="מתחת לסלע - רקפת משתפת" className={style.bannerImage} />
+          <img src={SIDE_LOGO} alt="רקפת משתפת" className={classnames(style.sideLogo, style.sideLogoLeft)} />
+          <img src={SIDE_LOGO} alt="רקפת משתפת" className={classnames(style.sideLogo, style.sideLogoRight)} />
+        </div>
       </div>
       <div className={style.navBar}>
         <div className={style.navButtons}>
@@ -48,7 +54,7 @@ export function NavigationPanel(props: NavigationPanelProps) {
             חיפוש
           </button>
           <Link 
-            to="/editor" 
+            to={editorHref} 
             className={classnames(style.navBtn, style.navBtnEditor, { [style.navBtnActive]: activeTab === "editor" })}
           >
             עורך

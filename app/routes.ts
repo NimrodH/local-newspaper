@@ -7,6 +7,7 @@ export default [
   route("/api/list-images", "routes/api/list-images.ts"),
   route("/api/track-click", "routes/api/track-click.ts"),
   route("/api/save-article", "routes/api/save-article.ts"),
+  route("/api/delete-article", "routes/api/delete-article.ts"),
   route("/api/create-issue", "routes/api/create-issue.ts"),
   route("/api/publish-issue", "routes/api/publish-issue.ts"),
   route("/api/unpublish-issue", "routes/api/unpublish-issue.ts"),

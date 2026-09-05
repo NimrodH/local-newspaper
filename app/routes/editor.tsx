@@ -8,6 +8,7 @@ import { ArticleForm, type ArticleFormData } from "../blocks/editor/article-form
 import { ImageUpload } from "../blocks/editor/image-upload";
 import { ImageSelection } from "../blocks/editor/image-selection";
 import { SaveButton } from "../blocks/editor/save-button";
+import { DeleteArticleButton } from "../blocks/editor/delete-article-button";
 import { PublishIssueButton } from "../blocks/editor/publish-issue-button";
 import { UnpublishIssueButton } from "../blocks/editor/unpublish-issue-button";
 import { DeleteIssueButton } from "../blocks/editor/delete-issue-button";
@@ -135,6 +136,13 @@ export default function Editor({ loaderData }: Route.ComponentProps) {
     revalidate();
   };
 
+  const handleArticleDeleted = () => {
+    setSelectedArticleId(null);
+    setFormData(EMPTY_FORM);
+    setSelectedImages([]);
+    revalidate();
+  };
+
   const handleCreateIssue = async () => {
     setCreatingIssue(true);
     setCreateIssueError(null);
@@ -159,6 +167,9 @@ export default function Editor({ loaderData }: Route.ComponentProps) {
   const navPanel = (
     <NavigationPanel
       activeTab="editor"
+      editorHref={
+        loaderData.selectedIssue ? `/editor?issue=${loaderData.selectedIssue.issue_number}` : "/editor"
+      }
       onPreviousIssues={() => navigate("/?view=previous")}
       onLatestIssue={() => navigate("/")}
       onTitles={() => navigate("/?view=titles")}
@@ -268,6 +279,15 @@ export default function Editor({ loaderData }: Route.ComponentProps) {
                 onSaved={handleSaved}
               />
             </div>
+            {selectedArticleId && (
+              <div className={styles.card}>
+                <DeleteArticleButton
+                  password={password}
+                  articleId={selectedArticleId}
+                  onDeleted={handleArticleDeleted}
+                />
+              </div>
+            )}
             {loaderData.selectedIssue && !loaderData.selectedIssue.approved_for_display && (
               <>
                 <div className={styles.card}>

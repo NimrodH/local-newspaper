@@ -10,14 +10,40 @@
   max-height: 80px;
   display: flex;
   justify-content: center;
-  background: linear-gradient(135deg, #e8f5e9, #f3faf4);
+  background: #ddf0dd;
   min-height: 80px;
 }
 
-.bannerImage {
+.bannerInner {
+  position: relative;
   width: 100%;
   max-width: 900px;
   height: 80px;
+}
+
+.sideLogo {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: clamp(32px, 12%, 130px);
+  height: auto;
+  object-fit: contain;
+  z-index: 1;
+}
+
+.sideLogoLeft {
+  left: 8px;
+}
+
+.sideLogoRight {
+  right: 8px;
+}
+
+.bannerImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center;
 }
