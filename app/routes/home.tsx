@@ -172,7 +172,12 @@ export default function Reader({ loaderData }: Route.ComponentProps) {
       {isPreview && (
         <div className={styles.previewBanner}>
           <span className={styles.previewBannerText}>👁 מצב תצוגה מקדימה — גיליון טיוטה (לא פורסם)</span>
-          <Link to="/editor" className={styles.previewBannerLink}>חזרה לעריכה</Link>
+          <Link
+            to={currentIssue ? `/editor?issue=${currentIssue.issue_number}` : "/editor"}
+            className={styles.previewBannerLink}
+          >
+            חזרה לעריכה
+          </Link>
         </div>
       )}
 

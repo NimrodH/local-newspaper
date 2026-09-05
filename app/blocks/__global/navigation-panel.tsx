@@ -11,10 +11,11 @@ export interface NavigationPanelProps {
   onTitles?: () => void;
   onSearch?: () => void;
   activeTab?: "previous" | "latest" | "titles" | "search" | "editor";
+  editorHref?: string;
 }
 
 export function NavigationPanel(props: NavigationPanelProps) {
-  const { className, onPreviousIssues, onLatestIssue, onTitles, onSearch, activeTab } = props;
+  const { className, onPreviousIssues, onLatestIssue, onTitles, onSearch, activeTab, editorHref = "/editor" } = props;
 
   return (
     <nav className={classnames(style.root, className)}>
@@ -48,7 +49,7 @@ export function NavigationPanel(props: NavigationPanelProps) {
             חיפוש
           </button>
           <Link 
-            to="/editor" 
+            to={editorHref} 
             className={classnames(style.navBtn, style.navBtnEditor, { [style.navBtnActive]: activeTab === "editor" })}
           >
             עורך

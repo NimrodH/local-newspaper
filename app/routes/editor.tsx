@@ -159,6 +159,9 @@ export default function Editor({ loaderData }: Route.ComponentProps) {
   const navPanel = (
     <NavigationPanel
       activeTab="editor"
+      editorHref={
+        loaderData.selectedIssue ? `/editor?issue=${loaderData.selectedIssue.issue_number}` : "/editor"
+      }
       onPreviousIssues={() => navigate("/?view=previous")}
       onLatestIssue={() => navigate("/")}
       onTitles={() => navigate("/?view=titles")}
