@@ -103,3 +103,10 @@
 .numberInput {
   width: 120px;
 }
+
+.checkboxField {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  cursor: pointer;
+}

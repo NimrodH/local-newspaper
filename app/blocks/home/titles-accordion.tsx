@@ -36,6 +36,30 @@ function ArticleContent({ content }: { content: string }) {
   );
 }
 
+function ArticleBody({ article }: { article: Article }) {
+  return (
+    <>
+      <ArticleContent content={article.content} />
+      {article.related_images && article.related_images.length > 0 && (
+        <div className={style.images}>
+          {article.related_images.map((img, i) => (
+            <img key={i} src={getImageUrl(img)} alt={`תמונה ${i + 1}`} className={style.image} />
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
+
+// Comment articles have no visible title, so there is nothing to expand: show them open.
+function CommentItem({ article }: { article: Article }) {
+  return (
+    <div className={style.comment}>
+      <ArticleBody article={article} />
+    </div>
+  );
+}
+
 function AccordionItem({ article }: { article: Article }) {
   const [open, setOpen] = useState(false);
 
@@ -49,14 +73,7 @@ function AccordionItem({ article }: { article: Article }) {
       </button>
       {open && (
         <div className={style.itemBody}>
-          <ArticleContent content={article.content} />
-          {article.related_images && article.related_images.length > 0 && (
-            <div className={style.images}>
-              {article.related_images.map((img, i) => (
-                <img key={i} src={getImageUrl(img)} alt={`תמונה ${i + 1}`} className={style.image} />
-              ))}
-            </div>
-          )}
+          <ArticleBody article={article} />
         </div>
       )}
     </div>
@@ -69,7 +86,9 @@ export function TitlesAccordion({ className, articles, loading }: TitlesAccordio
       <h2 className={style.heading}>כותרות כתבות</h2>
       {loading && <p className={style.state}>טוען…</p>}
       {!loading && articles.length === 0 && <p className={style.state}>אין כתבות להצגה.</p>}
-      {!loading && articles.map((a) => <AccordionItem key={a.id} article={a} />)}
+      {!loading && articles.map((a) =>
+          a.is_comment ? <CommentItem key={a.id} article={a} /> : <AccordionItem key={a.id} article={a} />
+        )}
     </section>
   );
 }

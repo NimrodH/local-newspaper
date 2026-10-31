@@ -64,6 +64,7 @@ const EMPTY_FORM: ArticleFormData = {
   content: "",
   keywords: "",
   orderInIssue: 1,
+  isComment: false,
 };
 
 // Not localStorage: this should clear when the tab closes, not persist indefinitely.
@@ -101,6 +102,7 @@ export default function Editor({ loaderData }: Route.ComponentProps) {
       content: article.content,
       keywords: article.keywords ?? "",
       orderInIssue: article.order_in_issue,
+      isComment: article.is_comment,
     });
     setSelectedImages(article.related_images ?? []);
   };
@@ -256,7 +258,7 @@ export default function Editor({ loaderData }: Route.ComponentProps) {
                     <option value="">כתבה חדשה בגיליון</option>
                     {loaderData.articles.map((article) => (
                       <option key={article.id} value={article.id}>
-                        {article.order_in_issue}. {article.title}
+                        {article.order_in_issue}. {article.is_comment ? "(הערה) " : ""}{article.title}
                       </option>
                     ))}
                   </select>

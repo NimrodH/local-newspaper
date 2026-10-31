@@ -43,6 +43,7 @@ export type Database = {
         Row: {
           content: string
           id: number
+          is_comment: boolean
           issue_number: number
           keywords: string
           order_in_issue: number
@@ -52,6 +53,7 @@ export type Database = {
         Insert: {
           content?: string
           id?: number
+          is_comment?: boolean
           issue_number: number
           keywords?: string
           order_in_issue?: number
@@ -61,6 +63,7 @@ export type Database = {
         Update: {
           content?: string
           id?: number
+          is_comment?: boolean
           issue_number?: number
           keywords?: string
           order_in_issue?: number

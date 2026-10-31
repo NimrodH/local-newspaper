@@ -19,6 +19,8 @@ export interface ArticleFormData {
   content: string;
   keywords: string;
   orderInIssue: number;
+  /** Comment articles are shown without a title, in a handwriting font. */
+  isComment: boolean;
 }
 
 export interface ArticleFormProps {
@@ -91,15 +93,25 @@ export function ArticleForm({ className, data, onChange }: ArticleFormProps) {
   return (
     <div className={classnames(style.root, className)}>
       <h3 className={style.heading}>פרטי הכתבה</h3>
+      <label className={style.checkboxField}>
+        <input
+          type="checkbox"
+          checked={data.isComment}
+          onChange={(e) => onChange({ ...data, isComment: e.target.checked })}
+        />
+        <span className={style.label}>כתבת הערה (ללא כותרת, בכתב יד)</span>
+      </label>
       <div className={style.field}>
-        <label className={style.label} htmlFor="article-title">כותרת</label>
+        <label className={style.label} htmlFor="article-title">
+          {data.isComment ? "שם פנימי (לא מוצג לקוראים)" : "כותרת"}
+        </label>
         <input
           id="article-title"
           type="text"
           className={style.input}
           value={data.title}
           onChange={update("title")}
-          placeholder="כותרת הכתבה"
+          placeholder={data.isComment ? "שם לזיהוי ההערה בעורך" : "כותרת הכתבה"}
           dir="rtl"
         />
       </div>

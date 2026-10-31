@@ -119,6 +119,24 @@
   border-radius: var(--radius-md);
 }
 
+/* Comment articles: no card background, handwriting font. */
+.comment {
+  margin-bottom: var(--space-sm);
+  padding: 0 var(--space-lg) var(--space-sm);
+}
+
+.comment .paragraph,
+.comment p,
+.comment ul,
+.comment ol,
+.comment h2 {
+  font-family: var(--family-handwriting);
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--color-text);
+}
+
 .state {
   text-align: center;
   padding: var(--space-2xl);

@@ -74,6 +74,7 @@ export async function action({ request }: { request: Request }) {
           order_in_issue: formData.orderInIssue || 1,
           keywords: formData.keywords || "",
           related_images: selectedImages || [],
+          is_comment: !!formData.isComment,
         })
         .eq("id", articleId);
 
@@ -104,6 +105,7 @@ export async function action({ request }: { request: Request }) {
       order_in_issue: formData.orderInIssue || 1,
       keywords: formData.keywords || "",
       related_images: selectedImages || [],
+      is_comment: !!formData.isComment,
     });
 
     if (error) {

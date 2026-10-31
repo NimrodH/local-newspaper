@@ -76,6 +76,25 @@
   box-shadow: var(--shadow-sm);
 }
 
+/* Comment articles: no card background, handwriting font. */
+.comment {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+}
+
+.comment .paragraph,
+.comment p,
+.comment ul,
+.comment ol,
+.comment h2 {
+  font-family: var(--family-handwriting);
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--color-text);
+}
+
 .state {
   text-align: center;
   padding: var(--space-3xl) var(--space-lg);

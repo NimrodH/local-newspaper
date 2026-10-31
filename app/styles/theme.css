@@ -21,6 +21,7 @@
   --family-display: 'Playfair Display', 'David Libre', serif;
   --family-body: 'Source Sans 3', 'Assistant', sans-serif;
   --family-hebrew: 'Assistant', 'Rubik', sans-serif;
+  --family-handwriting: 'Amatic SC', 'Assistant', cursive;
 
   /* Spacing */
   --space-xs: 4px;
