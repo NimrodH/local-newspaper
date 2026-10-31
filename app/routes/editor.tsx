@@ -334,8 +334,10 @@ export default function Editor({ loaderData }: Route.ComponentProps) {
                         type="button"
                         className={styles.removeBtn}
                         onClick={() => handleToggleImage(p)}
+                        aria-label={`הסר תמונה ${p.split('/').pop()}`}
+                        title="הסר תמונה"
                       >
-                        &times;
+                        הסר
                       </button>
                     </li>
                   ))}

@@ -205,12 +205,21 @@
 }
 
 .removeBtn {
-  background: none;
-  border: none;
+  background: var(--color-error);
+  border: 1px solid var(--color-error);
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  color: var(--color-error);
-  font-size: 1.1rem;
+  color: #fff;
+  font-family: var(--family-hebrew);
+  font-size: var(--text-xs);
+  font-weight: 700;
   line-height: 1;
+  padding: var(--space-xs) var(--space-sm);
+  transition: opacity 0.2s ease;
+}
+
+.removeBtn:hover {
+  opacity: 0.9;
 }
 
 @media (max-width: 768px) {
