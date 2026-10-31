@@ -89,9 +89,9 @@
 .comment ol,
 .comment h2 {
   font-family: var(--family-handwriting);
-  font-size: 1.6rem;
-  font-weight: 700;
-  line-height: 1.4;
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.8;
   color: var(--color-text);
 }
 
