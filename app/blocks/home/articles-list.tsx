@@ -38,8 +38,9 @@ function ArticleContent({ content }: { content: string }) {
 
 function ArticleCard({ article }: { article: Article }) {
   return (
-    <article className={style.article}>
-      <h2 className={style.articleTitle}>{article.title}</h2>
+    <article className={classnames(style.article, article.is_comment && style.comment)}>
+      {/* Comment articles have no visible title. */}
+      {!article.is_comment && <h2 className={style.articleTitle}>{article.title}</h2>}
       <ArticleContent content={article.content} />
       {article.related_images && article.related_images.length > 0 && (
         <div className={style.images}>
