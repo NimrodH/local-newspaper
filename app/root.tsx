@@ -20,6 +20,12 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
+// Keep the site out of search engines. netlify.toml headers only reach static
+// files, so server-rendered pages need the header set here too.
+export const headers: Route.HeadersFunction = () => ({
+  "X-Robots-Tag": "noindex, nofollow",
+});
+
 export function Layout({ children }: { children: React.ReactNode }) {
   const { rootCssClass, resolvedScheme } = useColorScheme();
   return (
@@ -27,6 +33,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="robots" content="noindex, nofollow" />
+        <meta name="googlebot" content="noindex, nofollow" />
         <Meta />
         <script src={colorSchemeApi} data-light-class="light-theme" data-dark-class="dark-theme"></script>
         <Links />
