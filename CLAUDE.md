@@ -18,7 +18,8 @@ A local newspaper site: readers browse published issues and articles; editors ma
 - `supabase` (anon key) is safe for the browser. `createAdminClient()` uses the service-role key and bypasses RLS: use it only inside server loaders/actions and `app/routes/api/*`, never in client code.
 - Schema changes go in a new migration: `npx supabase migration new <name>`, then edit the SQL file. Apply to the live project with `npx supabase db push` only after the user approves.
 - Never commit `.env` or print secrets from it.
-- Keep the `Issue` / `Article` types in `app/lib/supabase.ts` in sync with the schema.
+- Generated DB types live in `app/lib/database.types.ts`; refresh with `npm run db:types` after schema changes. Keep the `Issue` / `Article` types in `app/lib/supabase.ts` in sync.
+- No Docker on this machine: `supabase db pull` / `db diff` / local DB don't work. Read the live schema through the read-only Supabase MCP instead.
 
 ## Commands
 - `npm run dev` — dev server
