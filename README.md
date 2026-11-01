@@ -1,30 +1,22 @@
-# Welcome to Your Dazl Project! 🎉
+# Local Newspaper
 
-Your canvas for building beautiful, fast, and user-friendly web applications. This project is designed to help you move from idea to launch quickly, without getting bogged down in technical complexity.
+A local newspaper site: readers browse published issues and articles; editors manage them in a password-protected editor.
 
-## What You're Getting
+## Links
 
-Think of this as your complete toolkit for building modern web experiences. Everything you need is already set up and ready to go.
+| Link | Usage |
+| --- | --- |
+| [rakefetnews.netlify.app](https://rakefetnews.netlify.app) | **Public site (production).** Readers see the latest published issue with its articles. Deployed automatically when changes are merged into `main`. |
+| [rakefetnews.netlify.app/?view=titles](https://rakefetnews.netlify.app/?view=titles) | **Titles view.** Opens the site straight on the list of article titles, so readers can scan the issue and open only what interests them. Handy as a direct link to share. |
+| [rakefetnews.netlify.app/editor](https://rakefetnews.netlify.app/editor) | **Editor.** Create, edit, publish and delete issues and articles, and upload images. Requires the editor password (`EDITOR_PASSWORD`). |
+| [develop--rakefetnews.netlify.app](https://develop--rakefetnews.netlify.app) | **Test site (develop branch).** Built from the `develop` branch, used to check changes before they go live. **Note:** right now the test site uses the same database as the live site, so any content added, edited or deleted here also changes the live site. Add `/editor` or `/?view=titles` for the same pages as above. |
 
-- 🎨 **Beautiful UI Out of the Box** - A complete library of polished, accessible components that look great and work seamlessly together. Buttons, forms, dialogs, navigation—it's all here, styled and ready to use.
+## Development
 
-- ⚡ **Lightning-Fast Performance** - Your users will love how snappy everything feels. Pages load instantly, interactions are smooth, and your app works great even on slower connections.
+- `npm run dev` — run locally
+- `npm run typecheck` — type check (run before committing)
+- `npm run build` — production build
 
-- 🎯 **Consistent Design System** - Every color, spacing, and animation follows a cohesive design language. Make changes to your brand in one place, and watch them update everywhere automatically.
+Work on `develop`; open pull requests from `develop` into `main`. Merging into `main` deploys the production site on Netlify.
 
-- 📱 **Works Everywhere** - Desktop, tablet, mobile—your app adapts beautifully to any screen size without extra work.
-
-## Need Help?
-
-You're never stuck — here's where to look:
-
-|     | Resource                                                                        | What you'll find                                                  |
-| --- | ------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| 🚀  | **[Getting Started](https://help.dazl.dev)**                                    | Onboarding, core guides, and everything to hit the ground running |
-| 🤖  | **[Working with the AI](https://help.dazl.dev/docs/building-with-dazl/design-and-refine/chat-driven-editing)** | Prompting, iterating, inspecting changes, and version management  |
-| 🛠️  | **[Using the Dev Tools](https://help.dazl.dev/docs/building-with-dazl/iterate-and-collaborate/inspecting-your-project)** | Elements, Console, and Code panels for precise debugging          |
-| 💰  | **[Pricing & Account](https://dazl.dev/pricing)**                               | Plans, credits, and what's included                               |
-
----
-
-**Built with [Dazl](https://dazl.dev)** · Empowering product teams to build better, faster.
+Built with React Router 7, Supabase and Netlify. See [CLAUDE.md](CLAUDE.md) for project conventions.
