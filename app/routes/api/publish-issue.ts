@@ -46,6 +46,16 @@ export async function action({ request }: { request: Request }) {
       return Response.json({ error: updateError.message }, { status: 500 });
     }
 
+    // A new issue starts its statistics from zero. The issue is already
+    // published at this point, so a failed reset is logged, not reported as a failed publish.
+    const { error: resetError } = await adminClient
+      .from("button_clicks")
+      .update({ count: 0 })
+      .neq("name", "");
+    if (resetError) {
+      console.error("Failed to reset click counters:", resetError.message);
+    }
+
     return Response.json({ success: true, issueNumber: draft.issue_number });
   } catch (error: any) {
     return Response.json({ error: error.message }, { status: 500 });
