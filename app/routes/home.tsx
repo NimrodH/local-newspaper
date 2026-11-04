@@ -239,7 +239,9 @@ export default function Reader({ loaderData }: Route.ComponentProps) {
           {view === "search" && (
             <>
               <SearchFilter value={searchQuery} onChange={setSearchQuery} />
-              <ArticlesList articles={articles} loading={loading} error={error} searchQuery={searchQuery} />
+              {searchQuery.trim() && (
+                <ArticlesList articles={articles} loading={loading} error={error} searchQuery={searchQuery} />
+              )}
             </>
           )}
         </>
