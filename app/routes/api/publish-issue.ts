@@ -35,9 +35,11 @@ export async function action({ request }: { request: Request }) {
     }
 
     const draft = drafts[0];
+    // The issue's date is the day it is published, in Israel time (YYYY-MM-DD).
+    const publishDate = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Jerusalem" });
     const { error: updateError } = await adminClient
       .from("issues")
-      .update({ approved_for_display: true })
+      .update({ approved_for_display: true, issue_date: publishDate })
       .eq("id", draft.id);
 
     if (updateError) {
