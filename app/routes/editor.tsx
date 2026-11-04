@@ -40,8 +40,21 @@ export async function loader({ request }: Route.LoaderArgs) {
     error = articlesError?.message ?? error;
   }
 
-  return { issues, selectedIssue, articles, error };
+  const { data: clicksData } = await admin.from("button_clicks").select("name, count");
+  const clickCounts: Record<string, number> = {};
+  for (const row of clicksData ?? []) clickCounts[row.name] = row.count;
+
+  return { issues, selectedIssue, articles, error, clickCounts };
 }
+
+// Counters saved by trackClick() on the home page, in display order.
+const CLICK_STATS: { name: string; label: string }[] = [
+  { name: "enter-app", label: "כניסות לאתר" },
+  { name: "latest-issue", label: "גיליון אחרון" },
+  { name: "previous-issues", label: "גיליונות קודמים" },
+  { name: "titles", label: "כותרות" },
+  { name: "search-issues", label: "חיפוש" },
+];
 
 export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
@@ -346,6 +359,17 @@ export default function Editor({ loaderData }: Route.ComponentProps) {
                 </ul>
               </div>
             )}
+            <div className={styles.card}>
+              <h3 className={styles.statsTitle}>סטטיסטיקה</h3>
+              <ul className={styles.statsList}>
+                {CLICK_STATS.map(({ name, label }, i) => (
+                  <li key={name} className={styles.statsItem}>
+                    <span>{i === 0 ? label : `לחיצות על "${label}"`}</span>
+                    <strong>{(loaderData.clickCounts[name] ?? 0).toLocaleString("he-IL")}</strong>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </div>

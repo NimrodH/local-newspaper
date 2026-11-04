@@ -35,13 +35,25 @@ export async function action({ request }: { request: Request }) {
     }
 
     const draft = drafts[0];
+    // The issue's date is the day it is published, in Israel time (YYYY-MM-DD).
+    const publishDate = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Jerusalem" });
     const { error: updateError } = await adminClient
       .from("issues")
-      .update({ approved_for_display: true })
+      .update({ approved_for_display: true, issue_date: publishDate })
       .eq("id", draft.id);
 
     if (updateError) {
       return Response.json({ error: updateError.message }, { status: 500 });
+    }
+
+    // A new issue starts its statistics from zero. The issue is already
+    // published at this point, so a failed reset is logged, not reported as a failed publish.
+    const { error: resetError } = await adminClient
+      .from("button_clicks")
+      .update({ count: 0 })
+      .neq("name", "");
+    if (resetError) {
+      console.error("Failed to reset click counters:", resetError.message);
     }
 
     return Response.json({ success: true, issueNumber: draft.issue_number });

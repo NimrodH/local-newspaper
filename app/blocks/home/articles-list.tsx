@@ -57,7 +57,8 @@ export function ArticlesList({ className, articles, loading, error, searchQuery 
   const filtered = searchQuery
     ? articles.filter((a) => {
         const words = searchQuery.toLowerCase().split(/\s+/).filter(Boolean);
-        return words.some((w) => (a.keywords ?? "").toLowerCase().includes(w));
+        const haystack = `${a.keywords ?? ""} ${a.title ?? ""}`.toLowerCase();
+        return words.some((w) => haystack.includes(w));
       })
     : articles;
 
