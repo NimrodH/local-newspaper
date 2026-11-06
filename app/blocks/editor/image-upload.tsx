@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import classnames from "classnames";
 import { IconUpload, IconClipboard, IconX } from "@tabler/icons-react";
 import style from "./image-upload.module.css";
@@ -53,21 +53,26 @@ export function ImageUpload({ className, password = "", onUploaded }: ImageUploa
     if (file) uploadFile(file);
   };
 
-  const handlePaste = useCallback(
-    async (e: React.ClipboardEvent) => {
-      const items = e.clipboardData.items;
+  // Paste an image anywhere on the page to upload it and add it to the current article.
+  useEffect(() => {
+    function handlePaste(e: ClipboardEvent) {
+      const items = e.clipboardData?.items;
+      if (!items) return;
       for (const item of Array.from(items)) {
         if (item.type.startsWith("image/")) {
           const file = item.getAsFile();
           if (file) {
-            await uploadFile(new File([file], `paste-${Date.now()}.png`, { type: file.type }));
+            e.preventDefault();
+            const ext = file.type.split("/")[1] || "png";
+            uploadFile(new File([file], `paste-${Date.now()}.${ext}`, { type: file.type }));
             return;
           }
         }
       }
-    },
-    [uploadFile]
-  );
+    }
+    window.addEventListener("paste", handlePaste);
+    return () => window.removeEventListener("paste", handlePaste);
+  }, [uploadFile]);
 
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
@@ -83,7 +88,6 @@ export function ImageUpload({ className, password = "", onUploaded }: ImageUploa
       <h3 className={style.heading}>העלאת תמונות</h3>
       <div
         className={style.dropZone}
-        onPaste={handlePaste}
         onDrop={handleDrop}
         onDragOver={(e) => e.preventDefault()}
         tabIndex={0}
