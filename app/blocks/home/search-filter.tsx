@@ -34,7 +34,7 @@ export function SearchFilter({ className, value, onChange }: SearchFilterProps) 
           )}
         </div>
         {value && (
-          <p className={style.hint}>מחפש בכותרות ובמילות מפתח: &ldquo;{value}&rdquo;</p>
+          <p className={style.hint}>מחפש בכל הגיליונות בכותרות ובמילות מפתח: &ldquo;{value}&rdquo;</p>
         )}
       </div>
     </section>
