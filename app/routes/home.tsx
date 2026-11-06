@@ -66,10 +66,33 @@ export async function loader({ request }: Route.LoaderArgs) {
     }
   }
 
+  // The search view looks through every issue the reader can see, not just the current one.
+  let searchArticles: Article[] = [];
+  if (url.searchParams.get("view") === "search" && activeIssues.length > 0) {
+    const { data: searchData, error: searchErr } = await admin
+      .from("articles")
+      .select("*")
+      .in("issue_number", activeIssues.map((i) => i.issue_number))
+      .eq("is_comment", false) // comment articles are not searchable
+      .order("order_in_issue", { ascending: true });
+
+    if (searchErr) {
+      console.error("Loader fetchSearchArticles error:", searchErr.message);
+      errorMsg = `שגיאה בטעינת כתבות: ${searchErr.message}`;
+    } else {
+      // Newest issue first, keeping each issue's article order.
+      const issueRank = new Map(activeIssues.map((issue, index) => [issue.issue_number, index]));
+      searchArticles = ((searchData as Article[]) ?? []).sort(
+        (a, b) => (issueRank.get(a.issue_number) ?? 0) - (issueRank.get(b.issue_number) ?? 0)
+      );
+    }
+  }
+
   return {
     preview: isPreview,
     issues: activeIssues,
     articles,
+    searchArticles,
     currentIssue,
     hasDrafts,
     error: errorMsg,
@@ -97,6 +120,13 @@ export default function Reader({ loaderData }: Route.ComponentProps) {
   const loading = false;
   const error = loaderData.error;
   const hasDrafts = loaderData.hasDrafts;
+
+  const formatIssueLabel = (issue: Issue) =>
+    `גיליון ${issue.order_number ?? issue.issue_number} • ${new Date(issue.issue_date).toLocaleDateString("he-IL", { year: "numeric", month: "long", day: "numeric" })}`;
+  // Search results come from several issues, so each one shows which issue it is from.
+  const issueLabels: Record<number, string> = Object.fromEntries(
+    issues.map((issue) => [issue.issue_number, formatIssueLabel(issue)])
+  );
 
   const {
     view,
@@ -183,7 +213,7 @@ export default function Reader({ loaderData }: Route.ComponentProps) {
 
       {currentIssue && (
         <div className={styles.issueLabel}>
-          <span className={styles.issueLabelText}>גיליון {currentIssue.order_number ?? currentIssue.issue_number} &bull; {new Date(currentIssue.issue_date).toLocaleDateString("he-IL", { year: "numeric", month: "long", day: "numeric" })}</span>
+          <span className={styles.issueLabelText}>{formatIssueLabel(currentIssue)}</span>
         </div>
       )}
 
@@ -240,7 +270,13 @@ export default function Reader({ loaderData }: Route.ComponentProps) {
             <>
               <SearchFilter value={searchQuery} onChange={setSearchQuery} />
               {searchQuery.trim() && (
-                <ArticlesList articles={articles} loading={loading} error={error} searchQuery={searchQuery} />
+                <ArticlesList
+                  articles={loaderData.searchArticles}
+                  loading={loading}
+                  error={error}
+                  searchQuery={searchQuery}
+                  issueLabels={issueLabels}
+                />
               )}
             </>
           )}

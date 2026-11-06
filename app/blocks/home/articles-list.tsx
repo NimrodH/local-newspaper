@@ -9,6 +9,8 @@ export interface ArticlesListProps {
   loading: boolean;
   error: string | null;
   searchQuery?: string;
+  /** Issue label per issue_number, shown on each card (used by search, which spans issues). */
+  issueLabels?: Record<number, string>;
 }
 
 function getImageUrl(path: string): string {
@@ -36,9 +38,10 @@ function ArticleContent({ content }: { content: string }) {
   );
 }
 
-function ArticleCard({ article }: { article: Article }) {
+function ArticleCard({ article, issueLabel }: { article: Article; issueLabel?: string }) {
   return (
     <article className={classnames(style.article, article.is_comment && style.comment)}>
+      {issueLabel && <p className={style.issueLabel}>{issueLabel}</p>}
       {/* Comment articles have no visible title. */}
       {!article.is_comment && <h2 className={style.articleTitle}>{article.title}</h2>}
       <ArticleContent content={article.content} />
@@ -53,7 +56,7 @@ function ArticleCard({ article }: { article: Article }) {
   );
 }
 
-export function ArticlesList({ className, articles, loading, error, searchQuery }: ArticlesListProps) {
+export function ArticlesList({ className, articles, loading, error, searchQuery, issueLabels }: ArticlesListProps) {
   const filtered = searchQuery
     ? articles.filter((a) => {
         const words = searchQuery.toLowerCase().split(/\s+/).filter(Boolean);
@@ -79,7 +82,7 @@ export function ArticlesList({ className, articles, loading, error, searchQuery 
           <p className={style.emptyText}>אין כתבות להצגה.</p>
         </div>
       )}
-      {!loading && filtered.map((article) => <ArticleCard key={article.id} article={article} />)}
+      {!loading && filtered.map((article) => <ArticleCard key={article.id} article={article} issueLabel={issueLabels?.[article.issue_number]} />)}
     </section>
   );
 }
