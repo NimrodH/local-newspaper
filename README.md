@@ -9,7 +9,8 @@ A local newspaper site: readers browse published issues and articles; editors ma
 | [rakefetnews.netlify.app](https://rakefetnews.netlify.app) | **Public site (production).** Readers see the latest published issue with its articles. Deployed automatically when changes are merged into `main`. |
 | [rakefetnews.netlify.app/?view=titles](https://rakefetnews.netlify.app/?view=titles) | **Titles view.** Opens the site straight on the list of article titles, so readers can scan the issue and open only what interests them. Handy as a direct link to share. |
 | [rakefetnews.netlify.app/editor](https://rakefetnews.netlify.app/editor) | **Editor.** Create, edit, publish and delete issues and articles, and upload images. Requires the editor password (`EDITOR_PASSWORD`). |
-| [develop--rakefetnews.netlify.app](https://develop--rakefetnews.netlify.app) | **Test site (develop branch).** Built from the `develop` branch, used to check changes before they go live. **Note:** right now the test site uses the same database as the live site, so any content added, edited or deleted here also changes the live site. Add `/editor` or `/?view=titles` for the same pages as above. |
+| [develop--rakefetnews.netlify.app](https://develop--rakefetnews.netlify.app) | **Test site (develop branch).** Built from the `develop` branch, used to check changes before they go live. **Note:** right now the test site uses the same database as the live site, so any content added, edited or deleted here also changes the live site. Add `/?view=titles` for the titles view. |
+| [develop--rakefetnews.netlify.app/editor](https://develop--rakefetnews.netlify.app/editor) | **Test editor (develop branch).** The editor as built from `develop`, for trying editor changes before they go live. Same password as the live editor. **Note:** it uses the live database, so anything created, edited, published or deleted here appears on the live site too. |
 
 ## Development
 
