@@ -5,12 +5,37 @@
   gap: var(--space-md);
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding-bottom: var(--space-sm);
+  border-bottom: 2px solid var(--color-border);
+}
+
 .heading {
   font-family: var(--family-display);
   font-size: var(--text-xl);
   color: var(--color-primary);
-  padding-bottom: var(--space-sm);
-  border-bottom: 2px solid var(--color-border);
+}
+
+.toggleBtn {
+  font-family: var(--family-hebrew);
+  font-size: var(--text-sm);
+  color: var(--color-primary);
+  background: none;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  padding: var(--space-xs) var(--space-sm);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.toggleBtn:hover,
+.toggleBtn[aria-pressed="true"] {
+  background: var(--color-primary);
+  color: #fff;
 }
 
 .grid {
